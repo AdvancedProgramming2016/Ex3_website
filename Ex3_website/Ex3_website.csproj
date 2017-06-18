@@ -186,6 +186,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CommandsHub.cs" />
+    <Compile Include="Controllers\CommunicationSet.cs" />
     <Compile Include="Controllers\MultiPlayerController.cs" />
     <Compile Include="Controllers\Parsers\SolutionJson.cs" />
     <Compile Include="Controllers\Parsers\ToJsonParser.cs" />

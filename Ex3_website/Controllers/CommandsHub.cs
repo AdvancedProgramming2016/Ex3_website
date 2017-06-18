@@ -7,27 +7,74 @@ using Microsoft.AspNet.SignalR;
 
 namespace Ex3_website.Controllers
 {
+    /// <summary>
+    /// Game commands hub.
+    /// </summary>
     public class CommandsHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, string>
-            connectedUsers = new ConcurrentDictionary<string, string>();
+        /// <summary>
+        /// Holds a collection of all the active games.
+        /// </summary>
+        private static readonly ConcurrentDictionary<string, CommunicationSet>
+            activeGames =
+                new ConcurrentDictionary<string, CommunicationSet>();
 
-        public void Connect(string username)
+        /// <summary>
+        /// Adds a new connection to a game.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
+        public void Connect(string gameName)
         {
-            connectedUsers[username] = Context.ConnectionId;
+            CommunicationSet communicationSet;
+
+            //Check if game already exists.
+            if (activeGames.ContainsKey(gameName))
+            {
+                communicationSet = activeGames[gameName];
+                communicationSet.AddPlayer(Context.ConnectionId);
+            }
+            else
+            {
+                communicationSet = new CommunicationSet();
+                communicationSet.AddPlayer(Context.ConnectionId);
+                activeGames.GetOrAdd(gameName, communicationSet);
+            }
         }
 
-        public void SendCommand(string playerName, string opponentName,
-            string command)
+        /// <summary>
+        /// Remove game from active games collection.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
+        public void Disconnect(string gameName)
         {
-            string opponentId = connectedUsers[opponentName];
+            //Check if the game exists in the collection.
+            if (!activeGames.ContainsKey(gameName))
+            {
+                return;
+            }
 
+            CommunicationSet communicationSet;
+            activeGames.TryRemove(gameName, out communicationSet);
+        }
+
+        /// <summary>
+        /// Send a command to an opponent.
+        /// </summary>
+        /// <param name="gameName">Game name.</param>
+        /// <param name="command">Command.</param>
+        public void SendCommand(string gameName, string command)
+        {
+            CommunicationSet communicationSet = activeGames[gameName];
+            string opponentId = communicationSet.GetOpponent(Context.ConnectionId);
+
+            //Check if opponent exists.
             if (opponentId == null)
             {
                 return;
             }
 
-            Clients.Client(opponentId).gotCommand(playerName, command);
+            //TODO Should I also add (gameName, command), meaning what happens if the opponent plays two games, which game will receive the command?
+            Clients.Client(opponentId).gotCommand(command);
         }
     }
 }
