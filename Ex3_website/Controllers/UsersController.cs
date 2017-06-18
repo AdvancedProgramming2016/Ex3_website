@@ -28,13 +28,19 @@ namespace Ex3_website.Controllers
 
         // GET: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        public async Task<IHttpActionResult> GetUser(string username, string password)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            //Compute hash for password.
+            string encryptedPassword = ComputeHash(password);
+
+            var users = await db.Users.Where(u => u.Username == username && u.Password == encryptedPassword).ToListAsync();
+        
+            if (users == null)
             {
                 return NotFound();
             }
+
+            User user = users.First();
 
             return Ok(user);
         }

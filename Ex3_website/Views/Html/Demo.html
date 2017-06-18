@@ -80,7 +80,7 @@ Enter message: <input type="text" id="msgText"/><br/>
                     type: 'POST',
                     url: '../../api/Users',
                     data: {
-                        Name: "Jane Doe",
+                        Username: "Jane Doe",
                         Password: "1234",
                         Email: "jane@aaa.com",
                         GamesWon: 0,
@@ -103,7 +103,7 @@ Enter message: <input type="text" id="msgText"/><br/>
                     type: 'POST',
                     url: '../../api/Users',
                     data: {
-                        Name: "John Doe",
+                        Username: "John Doe",
                         Password: "4444",
                         Email: "john@aaa.com",
                         GamesWon: 0,
@@ -126,11 +126,12 @@ Enter message: <input type="text" id="msgText"/><br/>
                     type: 'GET',
                     url: '../../api/Users',
                     data: {
-                        Id: 6
+                        Username: "Jane Doe",
+                        Password: "1234"
                     },
 
                     success: function(response) {
-                        alert(response.Name);
+                        alert(response.Username);
                     },
 
                     error: function(xhr, textStatus, errorThrown) {
