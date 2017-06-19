@@ -23,7 +23,7 @@ namespace Ex3_website.Controllers
         // GET: api/Users
         public IQueryable<User> GetUsers()
         {
-            return db.Users;
+            return db.Users.Any() ? db.Users : null;
         }
 
         // GET: api/Users/5

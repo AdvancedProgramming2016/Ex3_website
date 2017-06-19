@@ -178,14 +178,17 @@
     <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />
     <Content Include="Views\Css\Style.css" />
     <Content Include="Views\Html\Demo.html" />
+    <Content Include="Views\Html\HomePage.html" />
     <Content Include="Views\Html\Login.html" />
     <Content Include="Views\Html\MultiplayerMenu.html" />
     <Content Include="Views\Html\Navbar.html" />
     <Content Include="Views\Html\RegisterPage.html" />
     <Content Include="Views\Html\SinglePlayerGame.html" />
+    <Content Include="Views\Html\UserRankingsPage.html" />
     <Content Include="Views\Scripts\Login.js" />
     <Content Include="Views\Scripts\RegisterUser.js" />
     <Content Include="Views\Scripts\SinglePlayerGame.js" />
+    <Content Include="Views\Scripts\UserRankings.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

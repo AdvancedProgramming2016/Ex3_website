@@ -198,7 +198,10 @@ Enter message: <input type="text" id="msgText"/><br/>
 //                        alert("Error: connection lost");
 //                    }
 //                });
-//            });
+        //            });
+
+        /////////////////////////////////////////////////////////////////////
+        //Commands hub
 
         //Get commandsHub.
         var commandsHub = $.connection.commandsHub;
@@ -216,7 +219,9 @@ Enter message: <input type="text" id="msgText"/><br/>
             var list = JSON.parse(gamesListInJsonFormat);
             $("#lstMessages").append("<li><strong>" + list[0] + "</li>");
         }
+        //End of client methods
 
+        //Server requests funtions
         $.connection.hub.start().done(function() {
 
             //Add new connection.
