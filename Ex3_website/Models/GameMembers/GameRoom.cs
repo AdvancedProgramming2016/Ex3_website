@@ -35,5 +35,27 @@ namespace Ex3_website.Models.GameMembers
                 IsGameAvailable = false;
             }
         }
+
+        public Player GetOpponent(string connectionId)
+        {
+
+            Player player = null;
+
+            if (this.PlayerOne == null || this.PlayerTwo == null)
+            {
+                return null;
+            }
+
+            if (this.PlayerOne.ConnectionId == connectionId)
+            {
+                player =  this.PlayerTwo;
+            }
+           else if(this.PlayerTwo.ConnectionId == connectionId)
+            {
+                player =  this.PlayerOne;
+            }
+
+            return player;
+        }
     }
 }

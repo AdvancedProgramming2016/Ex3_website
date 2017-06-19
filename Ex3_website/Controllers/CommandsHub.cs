@@ -26,48 +26,47 @@ namespace Ex3_website.Controllers
         /// <summary>
         /// Holds a collection of all the active games.
         /// </summary>
-        private static readonly ConcurrentDictionary<string, CommunicationSet>
-            activeGames =
-                new ConcurrentDictionary<string, CommunicationSet>();
+//        private static readonly ConcurrentDictionary<string, CommunicationSet>
+//            activeGames =
+//                new ConcurrentDictionary<string, CommunicationSet>();
 
-        /// <summary>
-        /// Adds a new connection to a game.
-        /// </summary>
-        /// <param name="gameName">Game name.</param>
-        public void Connect(string gameName)
-        {
-            CommunicationSet communicationSet;
-
-            //Check if game already exists.
-            if (activeGames.ContainsKey(gameName))
-            {
-                communicationSet = activeGames[gameName];
-                communicationSet.AddPlayer(Context.ConnectionId);
-            }
-            else
-            {
-                communicationSet = new CommunicationSet();
-                communicationSet.AddPlayer(Context.ConnectionId);
-                activeGames.GetOrAdd(gameName, communicationSet);
-            }
-        }
-
-        /// <summary>
-        /// Remove game from active games collection.
-        /// </summary>
-        /// <param name="gameName">Game name.</param>
-        public void Disconnect(string gameName)
-        {
-            //Check if the game exists in the collection.
-            if (!activeGames.ContainsKey(gameName))
-            {
-                return;
-            }
-
-            CommunicationSet communicationSet;
-            activeGames.TryRemove(gameName, out communicationSet);
-        }
-
+//        /// <summary>
+//        /// Adds a new connection to a game.
+//        /// </summary>
+//        /// <param name="gameName">Game name.</param>
+//        public void Connect(string gameName)
+//        {
+//            CommunicationSet communicationSet;
+//
+//            //Check if game already exists.
+//            if (activeGames.ContainsKey(gameName))
+//            {
+//                communicationSet = activeGames[gameName];
+//                communicationSet.AddPlayer(Context.ConnectionId);
+//            }
+//            else
+//            {
+//                communicationSet = new CommunicationSet();
+//                communicationSet.AddPlayer(Context.ConnectionId);
+//                activeGames.GetOrAdd(gameName, communicationSet);
+//            }
+//        }
+//
+//        /// <summary>
+//        /// Remove game from active games collection.
+//        /// </summary>
+//        /// <param name="gameName">Game name.</param>
+//        public void Disconnect(string gameName)
+//        {
+//            //Check if the game exists in the collection.
+//            if (!activeGames.ContainsKey(gameName))
+//            {
+//                return;
+//            }
+//
+//            CommunicationSet communicationSet;
+//            activeGames.TryRemove(gameName, out communicationSet);
+//        }
         public void StartGame(string mazeName, string rows, string columns)
         {
             //Start a new game.
@@ -82,7 +81,7 @@ namespace Ex3_website.Controllers
 
             //Parse maze to json.
             //JObject jsonMaze = ToJsonParser.ToJson(maze);
-            }
+        }
 
         public void JoinGame(string mazeName)
         {
@@ -114,18 +113,39 @@ namespace Ex3_website.Controllers
         /// <param name="command">Command.</param>
         public void SendCommand(string gameName, string command)
         {
-            CommunicationSet communicationSet = activeGames[gameName];
-            string opponentId =
-                communicationSet.GetOpponent(Context.ConnectionId);
-
-            //Check if opponent exists.
-            if (opponentId == null)
+            if (!model.GameRooms.ContainsKey(gameName))
             {
                 return;
             }
 
-            //TODO Should I also add (gameName, command), meaning what happens if the opponent plays two games, which game will receive the command?
-            Clients.Client(opponentId).gotCommand(command);
+            GameRoom room = model.GameRooms[gameName];
+
+            Player opponent = room.GetOpponent(Context.ConnectionId);
+
+            if (opponent == null)
+            {
+                return;
+            }
+
+            Clients.Client(opponent.ConnectionId).gotCommand(command);
+
+//            CommunicationSet communicationSet = activeGames[gameName];
+//            string opponentId =
+//                communicationSet.GetOpponent(Context.ConnectionId);
+//
+//            //Check if opponent exists.
+//            if (opponentId == null)
+//            {
+//                return;
+//            }
+//
+//            //TODO Should I also add (gameName, command), meaning what happens if the opponent plays two games, which game will receive the command?
+//            Clients.Client(opponentId).gotCommand(command);
+        }
+
+        public void Close(string mazeName)
+        {
+            model.Close(mazeName);
         }
     }
 }

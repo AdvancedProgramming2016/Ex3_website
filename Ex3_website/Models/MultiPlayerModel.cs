@@ -118,5 +118,14 @@ namespace Ex3_website.Models
 
             return room;
         }
+
+        public void Close(string mazeName)
+        {
+            if (this.StartedMazes.ContainsKey(mazeName))
+            {
+                this.StartedMazes.Remove(mazeName);
+                this.GameRooms.Remove(mazeName);
+            }
+        }
     }
 }
