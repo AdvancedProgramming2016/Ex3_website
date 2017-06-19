@@ -78,7 +78,7 @@ namespace Ex3_website.Models
         }
 
         public Maze StartGame(string mazeName, int rows, int columns,
-            string username)
+            string connectionId)
         {
             //Check if a game with the same already exists.
             if (StartedMazes.ContainsKey(mazeName))
@@ -93,28 +93,39 @@ namespace Ex3_website.Models
 
             //Create new game room.
             GameRoom room = new GameRoom(maze);
-            room.AddPlayer(username);
+            room.AddPlayer(connectionId);
             GameRooms.Add(maze.Name, room);
 
-            //Wait for second player to join the game.
-            while (room.IsGameAvailable)
-            {
-                Thread.Sleep(250);
-            }
+//            //Wait for second player to join the game.
+//            while (room.IsGameAvailable)
+//            {
+//                Thread.Sleep(250);
+//            }
 
             return maze;
         }
 
-        public Maze JoinGame(string mazeName, string username)
+        public GameRoom JoinGame(string mazeName, string connectionId)
         {
             //Add player to game room.
             GameRoom room = GameRooms[mazeName];
-            room.AddPlayer(username);
+            room.AddPlayer(connectionId);
 
-            //Get maze from game room.
-            Maze maze = room.RoomMaze;
+//            //Get maze from game room.
+//            Maze maze = room.RoomMaze;
 
-            return maze;
+//            return maze;
+
+            return room;
+        }
+
+        public void Close(string mazeName)
+        {
+            if (this.StartedMazes.ContainsKey(mazeName))
+            {
+                this.StartedMazes.Remove(mazeName);
+                this.GameRooms.Remove(mazeName);
+            }
         }
     }
 }

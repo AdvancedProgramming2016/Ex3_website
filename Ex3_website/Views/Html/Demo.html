@@ -22,14 +22,15 @@
 <button id="get">Get user</button>
 <button id="start">Start</button>
 <button id="join">Join</button>
-    
-<br/><br />Enter game name:<input type="text" id="gameTxt"/><br/>
+<button id="close">Close</button>
+
+<br/><br/>Enter game name:<input type="text" id="gameTxt"/><br/>
 <button id="btnConnect">Connect</button><br/>
 <h2>Received messages</h2>
 <ul id="lstMessages"></ul>
 <h2>Send messages</h2>
 Enter message: <input type="text" id="msgText"/><br/>
-    <button id="btnSendMessage">Send</button>
+<button id="btnSendMessage">Send</button>
 
 <script>
     $(function() {
@@ -98,7 +99,7 @@ Enter message: <input type="text" id="msgText"/><br/>
             });
 
         $("#addUsr2").on('click',
-            function () {
+            function() {
                 $.ajax({
                     type: 'POST',
                     url: '../../api/Users',
@@ -110,11 +111,11 @@ Enter message: <input type="text" id="msgText"/><br/>
                         GamesLost: 0
                     },
 
-                    success: function (response) {
+                    success: function(response) {
                         alert("user added");
                     },
 
-                    error: function (xhr, textStatus, errorThrown) {
+                    error: function(xhr, textStatus, errorThrown) {
                         alert("Error: connection lost");
                     }
                 });
@@ -140,64 +141,64 @@ Enter message: <input type="text" id="msgText"/><br/>
                 });
             });
 
-        $("#start").on('click',
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/MultiPlayer',
-                    data: {
-                        mazeName: "ddd",
-                        rows: "10",
-                        columns: "10",
-                        username: "john"
-                    },
+//        $("#start").on('click',
+//            function() {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: '../../api/MultiPlayer',
+//                    data: {
+//                        mazeName: "ddd",
+//                        rows: "10",
+//                        columns: "10",
+//                        username: "john"
+//                    },
+//
+//                    success: function(response) {
+//                        alert(response.Maze);
+//                    },
+//
+//                    error: function(xhr, textStatus, errorThrown) {
+//                        alert("Error: connection lost");
+//                    }
+//                });
+//            });
 
-                    success: function(response) {
-                        alert(response.Maze);
-                    },
+//        $("#join").on('click',
+//            function() {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: '../../api/MultiPlayer',
+//                    data: {
+//                        mazeName: "ddd",
+//                        username: "jane"
+//                    },
+//
+//                    success: function(response) {
+//                        alert(response.Maze);
+//                    },
+//
+//                    error: function(xhr, textStatus, errorThrown) {
+//                        alert("Error: connection lost");
+//                    }
+//                });
+//            });
 
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
-                    }
-                });
-            });
-
-        $("#join").on('click',
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/MultiPlayer',
-                    data: {
-                        mazeName: "ddd",
-                        username: "jane"
-                    },
-
-                    success: function(response) {
-                        alert(response.Maze);
-                    },
-
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
-                    }
-                });
-            });
-
-        $("#list").on('click',
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/MultiPlayer',
-
-                    success: function(response) {
-                        var obj = JSON.parse(response);
-                        alert(obj[0].text);
-                    },
-
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
-                    }
-                });
-            });
+//        $("#list").on('click',
+//            function() {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: '../../api/MultiPlayer',
+//
+//                    success: function(response) {
+//                        var obj = JSON.parse(response);
+//                        alert(obj[0].text);
+//                    },
+//
+//                    error: function(xhr, textStatus, errorThrown) {
+//                        alert("Error: connection lost");
+//                    }
+//                });
+//            });
 
         //Get commandsHub.
         var commandsHub = $.connection.commandsHub;
@@ -207,25 +208,49 @@ Enter message: <input type="text" id="msgText"/><br/>
             $("#lstMessages").append("<li><strong>" + command + "</li>");
         };
 
+        commandsHub.client.gotMaze = function(jsonMaze) {
+            $("#lstMessages").append("<li><strong>" + jsonMaze.Maze + "</li>");
+        }
+
+        commandsHub.client.gotListOfGames = function(gamesListInJsonFormat) {
+            var list = JSON.parse(gamesListInJsonFormat);
+            $("#lstMessages").append("<li><strong>" + list[0] + "</li>");
+        }
+
         $.connection.hub.start().done(function() {
-            
+
             //Add new connection.
-            $("#btnConnect").click(function () {
+            $("#btnConnect").click(function() {
                 var gameName = $("#gameTxt").val();
                 commandsHub.server.connect(gameName);
             });
 
             //Send command to opponent.
             $("#btnSendMessage").click(function() {
-                //var senderName = $("#targetName").val();
                 var text = $("#msgText").val();
                 var gameName = $("#gameTxt").val();
-                //var username = $("#userName").val();
                 commandsHub.server.sendCommand(gameName, text);
+            });
+
+            $("#start").click(function() {
+                var gameName = $("#gameTxt").val();
+                commandsHub.server.startGame(gameName, "10", "10");
+            });
+
+            $("#join").click(function() {
+                var gameName = $("#gameTxt").val();
+                commandsHub.server.joinGame(gameName);
+            });
+
+            $("#list").click(function() {
+                commandsHub.server.getListOfGames();
+            });
+
+            $("#close").click(function() {
+                commandsHub.server.close();
             });
         });
 
-     
 
     });
 
