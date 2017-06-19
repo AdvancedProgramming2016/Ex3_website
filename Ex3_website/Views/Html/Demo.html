@@ -140,64 +140,64 @@ Enter message: <input type="text" id="msgText"/><br/>
                 });
             });
 
-        $("#start").on('click',
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/MultiPlayer',
-                    data: {
-                        mazeName: "ddd",
-                        rows: "10",
-                        columns: "10",
-                        username: "john"
-                    },
+//        $("#start").on('click',
+//            function() {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: '../../api/MultiPlayer',
+//                    data: {
+//                        mazeName: "ddd",
+//                        rows: "10",
+//                        columns: "10",
+//                        username: "john"
+//                    },
+//
+//                    success: function(response) {
+//                        alert(response.Maze);
+//                    },
+//
+//                    error: function(xhr, textStatus, errorThrown) {
+//                        alert("Error: connection lost");
+//                    }
+//                });
+//            });
 
-                    success: function(response) {
-                        alert(response.Maze);
-                    },
+//        $("#join").on('click',
+//            function() {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: '../../api/MultiPlayer',
+//                    data: {
+//                        mazeName: "ddd",
+//                        username: "jane"
+//                    },
+//
+//                    success: function(response) {
+//                        alert(response.Maze);
+//                    },
+//
+//                    error: function(xhr, textStatus, errorThrown) {
+//                        alert("Error: connection lost");
+//                    }
+//                });
+//            });
 
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
-                    }
-                });
-            });
-
-        $("#join").on('click',
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/MultiPlayer',
-                    data: {
-                        mazeName: "ddd",
-                        username: "jane"
-                    },
-
-                    success: function(response) {
-                        alert(response.Maze);
-                    },
-
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
-                    }
-                });
-            });
-
-        $("#list").on('click',
-            function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../../api/MultiPlayer',
-
-                    success: function(response) {
-                        var obj = JSON.parse(response);
-                        alert(obj[0].text);
-                    },
-
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
-                    }
-                });
-            });
+//        $("#list").on('click',
+//            function() {
+//                $.ajax({
+//                    type: 'GET',
+//                    url: '../../api/MultiPlayer',
+//
+//                    success: function(response) {
+//                        var obj = JSON.parse(response);
+//                        alert(obj[0].text);
+//                    },
+//
+//                    error: function(xhr, textStatus, errorThrown) {
+//                        alert("Error: connection lost");
+//                    }
+//                });
+//            });
 
         //Get commandsHub.
         var commandsHub = $.connection.commandsHub;
@@ -206,6 +206,15 @@ Enter message: <input type="text" id="msgText"/><br/>
         commandsHub.client.gotCommand = function(command) {
             $("#lstMessages").append("<li><strong>" + command + "</li>");
         };
+
+        commandsHub.client.gotMaze = function (jsonMaze) {
+            $("#lstMessages").append("<li><strong>" + jsonMaze.Maze + "</li>");
+        }
+
+        commandsHub.client.gotListOfGames = function (gamesListInJsonFormat) {
+            var list = JSON.parse(gamesListInJsonFormat);
+            $("#lstMessages").append("<li><strong>" + list[0] + "</li>");
+        }
 
         $.connection.hub.start().done(function() {
             
@@ -222,6 +231,20 @@ Enter message: <input type="text" id="msgText"/><br/>
                 var gameName = $("#gameTxt").val();
                 //var username = $("#userName").val();
                 commandsHub.server.sendCommand(gameName, text);
+            });
+
+            $("#start").click(function() {
+                var gameName = $("#gameTxt").val();
+                commandsHub.server.startGame(gameName, "10", "10");
+            });
+
+            $("#join").click(function () {
+                var gameName = $("#gameTxt").val();
+                commandsHub.server.joinGame(gameName);
+            });
+
+            $("#list").click(function () {
+                commandsHub.server.getListOfGames();
             });
         });
 
