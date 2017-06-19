@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Single Game</title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="Style.css" type="text/css" />
+    <script src="../Scripts/SinglePlayerGame.js"></script>
+</head>
+<body>
+    <h1>Single Game</h1>
+    <table>
+        <tr>
+            <td>
+                <table id="singlePlayerTable">
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td><input type="text" class="singlePlayerInput" id="mazeName" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Rows:</b></td>
+                        <td><input type="text" class="singlePlayerInput" id="mazeRows" name="rows"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Cols:</b></td>
+                        <td> <input type="text" class="singlePlayerInput" id="mazeCols" name="cols"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" id="btnStartNewGame" class="button" value="Start new game" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>Search Algo</b></td>
+                        <td>
+                            <select name="algorithms" class="singlePlayerInput" id="selectedAlgo">
+                                <option value="1">Dfs</option>
+                                <option value="2">Bfs</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" class="button" id="solveMaze" value="Solve Game"></td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <canvas id="mazeCanvas" width="300" height="300" style="border:2px black
+                solid" onkeypress="movePlayer(event)"></canvas>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
