@@ -21,7 +21,6 @@
     var context = undefined;
 
     $(function () {
-
         $("body").on('keydown',
             function (e) {
                 if (maze) {
@@ -268,6 +267,7 @@
                         }
                         if (i == response.Solution.length) {
                             clearInterval(intervalId);
+                            alert("Congratulations!!!");
                         }
                         else {
                             i++;

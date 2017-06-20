@@ -179,12 +179,16 @@
     <Content Include="Views\Css\Style.css" />
     <Content Include="Views\Html\Demo.html" />
     <Content Include="Views\Html\Login.html" />
+    <Content Include="Views\Html\MultiplayerGame.html" />
     <Content Include="Views\Html\MultiplayerMenu.html" />
     <Content Include="Views\Html\Navbar.html" />
     <Content Include="Views\Html\RegisterPage.html" />
+    <Content Include="Views\Html\Settings.html" />
     <Content Include="Views\Html\SinglePlayerGame.html" />
     <Content Include="Views\Scripts\Login.js" />
+    <Content Include="Views\Scripts\MultiplayerGame.js" />
     <Content Include="Views\Scripts\RegisterUser.js" />
+    <Content Include="Views\Scripts\Settings.js" />
     <Content Include="Views\Scripts\SinglePlayerGame.js" />
     <Content Include="Web.config" />
   </ItemGroup>

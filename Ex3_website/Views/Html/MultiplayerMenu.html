@@ -1,84 +1,44 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Multiplayer manu</title>
+    <title>Multiplayer menu</title>
     <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../Content/bootstrap.min.css" />
+    <script src="../Scripts/MultiplayerGame.js"></script>
     <script src="../Scripts/jquery-1.9.1.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../Content/bootstrap-theme.min.css" />
     <link href="../Css/Style.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery.signalR-2.2.2.js"></script>
+    <script src="../../signalr/hubs"></script>
 </head>
 <body>
-    <nav class="navbar navbar-inverse bg-primary">
-        <div class="container-fluid">
-            <!--Logo-->
-            <div class="navbar-header">
-                <a href="#" class="navbar-brand">THE MAZE</a>
-            </div>
-            <!--Menu items-->
-            <div>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <!--Dropdown menu-->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Games <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">Single player</a>
-                            </li>
-                            <li class="active">
-                                <a href="MultiplayerMenu.html">Multiplayer</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="#">Settings</a>
-                    </li>
-                    <li>
-                        <a href="UserRankingsPage.html">User Rankings</a>
-                    </li>
-                </ul>
-                <!--Right align-->
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="RegisterPage.html">Register</a>
-                    </li>
-                    <li>
-                        <a href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <div style="padding-top: 50px">
         <div class="container block">
-            <form action="MultiplayerGame.html">
-                <fieldset>
-                    <legend style="font-weight: bold">Multiplayer menu</legend>
-                </fieldset>
-                <!--Join-->
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="gamesList" data-toggle="dropdown"> Games list <span class="caret"></span> </button> 
-                </div>
-                <input type="submit" value="join" />
+            <fieldset>
+                <legend style="font-weight: bold">Multiplayer menu</legend>
+            </fieldset>
+            <!--Join-->
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="gamesList" data-toggle="dropdown"> Games list <span class="caret"></span> </button> 
+            </div>
+            <input type="submit" value="join" id="joinButton" />
 
-                <!--Start-->
-                <h2>Start a new game</h2>
-                <label>Name</label>
-                <input type="text" id="gameName" name="gameName" placeholder="Game name">
-                <label>Rows</label>
-                <input type="number" id="rows" name="rows" placeholder="Number of rows">
-                <label>Columns</label>
-                <input type="number" id="columns" name="columns" placeholder="Number of columns">
-                <input type="submit" value="Start" />
-
-            </form>
+            <!--Start-->
+            <h2>Start a new game</h2>
+            <label>Name</label>
+            <input type="text" id="gameName" name="gameName" placeholder="Game name">
+            <label>Rows</label>
+            <input type="number" id="rows" name="rows" placeholder="Number of rows">
+            <label>Columns</label>
+            <input type="number" id="columns" name="columns" placeholder="Number of columns">
+            <input type="submit" value="Start" id="startButton" />
         </div>
     </div>
+
+    <canvas id="myCanvas" width="300" height="300" style="border: 2px black solid"></canvas>
+    <canvas id="opponentCanvas" width="300" height="300" style="border: 2px black solid"></canvas>
 </body>
 </html>
