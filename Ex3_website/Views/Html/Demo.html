@@ -93,7 +93,12 @@ Enter message: <input type="text" id="msgText"/><br/>
                     },
 
                     error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
+                        if (xhr.status == 400) {
+                            alert("Error: username alredy exists.");
+                        } else {
+                            alert("Error: connection lost.");
+
+                        }
                     }
                 });
             });
@@ -135,8 +140,15 @@ Enter message: <input type="text" id="msgText"/><br/>
                         alert(response.Username);
                     },
 
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        alert(xhr.status);
+//                        if (xhr.status == 400) {
+//                            alert("Error: username alredy exists.");
+//                        } else {
+//                            alert("Error: connection lost");
+//
+//                        }
                     }
                 });
             });
