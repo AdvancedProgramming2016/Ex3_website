@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings page</title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../Scripts/Settings.js"></script>
+    <style>
+        .settingsOptions {
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Settings</h1>
+    <table>
+        <tr>
+            <td><b>Default number of Rows:</b></td>
+            <td><input type="number" class="settingsOptions" id="defaultNumOfRows" placeholder="No. of rows"></td>
+        </tr>
+        <tr>
+            <td><b>Default number of Cols:</b></td>
+            <td><input type="number" class="settingsOptions" id="defaultNumOfCols" placeholder="No. of coloms"></td>
+        </tr>
+        <tr>
+            <td><b>Default Search Algo:</b></td>
+            <td>
+                <select name="algorithms" id="defaultAlgo">
+                    <option value="Dfs">Dfs</option>
+                    <option value="Bfs">Bfs</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="button" class="btn" id="updateSettingsButton" value="Update" />
+            </td>
+        </tr>
+    </table>
+    <div id="settingsUpdated"></div>
+</body>
+</html>
