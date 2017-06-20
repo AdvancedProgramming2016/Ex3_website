@@ -1,5 +1,6 @@
 ﻿$(function () {
 
+    //Load navbar.
     $("#loginNav").load("Navbar.html");
 
     $("#loginButton").on('click',
