@@ -1,5 +1,7 @@
 ﻿$(function () {
 
+    $("#loginNav").load("Navbar.html");
+
     $("#loginButton").on('click',
         function () {
 
