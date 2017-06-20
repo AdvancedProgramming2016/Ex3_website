@@ -92,7 +92,12 @@ Enter message: <input type="text" id="msgText"/><br/>
                     },
 
                     error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
+                        if (xhr.status == 400) {
+                            alert("Error: username alredy exists.");
+                        } else {
+                            alert("Error: connection lost.");
+
+                        }
                     }
                 });
             });
@@ -134,8 +139,15 @@ Enter message: <input type="text" id="msgText"/><br/>
                         alert(response.Username);
                     },
 
-                    error: function(xhr, textStatus, errorThrown) {
-                        alert("Error: connection lost");
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        alert(xhr.status);
+//                        if (xhr.status == 400) {
+//                            alert("Error: username alredy exists.");
+//                        } else {
+//                            alert("Error: connection lost");
+//
+//                        }
                     }
                 });
             });
@@ -197,7 +209,10 @@ Enter message: <input type="text" id="msgText"/><br/>
 //                        alert("Error: connection lost");
 //                    }
 //                });
-//            });
+        //            });
+
+        /////////////////////////////////////////////////////////////////////
+        //Commands hub
 
         //Get commandsHub.
         var commandsHub = $.connection.commandsHub;
@@ -215,7 +230,9 @@ Enter message: <input type="text" id="msgText"/><br/>
             var list = JSON.parse(gamesListInJsonFormat);
             $("#lstMessages").append("<li><strong>" + list[0] + "</li>");
         }
+        //End of client methods
 
+        //Server requests funtions
         $.connection.hub.start().done(function() {
 
             //Add new connection.

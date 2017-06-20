@@ -23,26 +23,30 @@ namespace Ex3_website.Controllers
         // GET: api/Users
         public IQueryable<User> GetUsers()
         {
-            return db.Users;
+            return db.Users.Any() ? db.Users : null;
         }
 
         // GET: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(string username, string password)
+        public async Task<IHttpActionResult> GetUser(string username,
+            string password)
         {
             //Compute hash for password.
             string encryptedPassword = ComputeHash(password);
 
-            var users = await db.Users.Where(u => u.Username == username && u.Password == encryptedPassword).ToListAsync();
-        
-            if (users == null)
+            var users = await db.Users
+                .Where(u => u.Username == username &&
+                            u.Password == encryptedPassword)
+                .ToListAsync();
+
+            if (users.Count == 0)
             {
                 return NotFound();
             }
 
             User user = users.First();
 
-            return Ok(user);
+            return Ok();
         }
 
         // PUT: api/Users/5
@@ -89,13 +93,22 @@ namespace Ex3_website.Controllers
                 return BadRequest(ModelState);
             }
 
+            var users = await db.Users.Where(u => u.Username == user.Username)
+                .ToListAsync();
+
+            //Check if username already exists in the database.
+            if (users.Count > 0)
+            {
+                return BadRequest();
+            }
+
             //Encrypt user password;
             user.Password = ComputeHash(user.Password);
 
             db.Users.Add(user);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+            return CreatedAtRoute("DefaultApi", new {id = user.Id}, user);
         }
 
         private string ComputeHash(string input)
