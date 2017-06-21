@@ -110,7 +110,14 @@
 
     commandsHub.client.gotListOfGames = function (gamesListInJsonFormat) {
         var list = JSON.parse(gamesListInJsonFormat);
-        $("#lstMessages").append("<li><strong>" + list[0] + "</li>");
+
+        // Empty the list before appending to it.
+        $("#gamesList").empty();
+
+        // Add the game to the drop down menu.
+        list.forEach(function(gameName) {
+            $("#gamesList").append(new Option(gameName, gameName));
+        });
     }
 
     $.connection.hub.start().done(function() {
@@ -123,13 +130,7 @@
         });
 
         $("#joinButton").click(function () {
-            commandsHub.server.joinGame("a");
-        });
-
-        //Add new connection.
-        $("#btnConnect").click(function() {
-            var gameName = $("#gameTxt").val();
-            commandsHub.server.connect(gameName);
+            commandsHub.server.joinGame($("#gamesList").val());
         });
 
         //Send command to opponent.
@@ -233,12 +234,7 @@
                 }
         });
 
-        $("#join").click(function() {
-            var gameName = $("#gameTxt").val();
-            commandsHub.server.joinGame(gameName);
-        });
-
-        $("#list").click(function() {
+        $("#gamesList").click(function () {
             commandsHub.server.getListOfGames();
         });
 
