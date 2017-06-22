@@ -57,13 +57,20 @@ namespace Ex3_website.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
-//            if (id != user.Id)
-//            {
-//                return BadRequest();
-//            }
 
-            db.Entry(user).State = EntityState.Modified;
+            var users = await db.Users
+                .Where(u => u.Username == user.Username) .ToListAsync();
+
+            if (users.Count == 0)
+            {
+                return NotFound();
+            }
+
+            User userWithId = users.First();
+            userWithId.GamesWon = user.GamesWon;
+            userWithId.GamesLost = user.GamesLost;
+
+            db.Entry(userWithId).State = EntityState.Modified;
 
             try
             {
@@ -71,7 +78,7 @@ namespace Ex3_website.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(user.Id))
+                if (!UserExists(userWithId.Id))
                 {
                     return NotFound();
                 }

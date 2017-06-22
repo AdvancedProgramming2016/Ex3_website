@@ -140,7 +140,7 @@ Enter message: <input type="text" id="msgText"/><br/>
                         alert(response.Username);
                     },
 
-                    error: function (xhr, textStatus, errorThrown) {
+                    error: function(xhr, textStatus, errorThrown) {
 
                         alert(xhr.status);
 //                        if (xhr.status == 400) {
@@ -154,7 +154,7 @@ Enter message: <input type="text" id="msgText"/><br/>
             });
 
         $("#update").on('click',
-            function () {
+            function() {
                 $.ajax({
                     type: 'PUT',
                     url: '../../api/Users',
@@ -166,19 +166,13 @@ Enter message: <input type="text" id="msgText"/><br/>
                         GamesLost: 0
                     },
 
-                    success: function (response) {
+                    success: function(response) {
                         alert(response.Username);
                     },
 
-                    error: function (xhr, textStatus, errorThrown) {
+                    error: function(xhr, textStatus, errorThrown) {
 
-                        alert(xhr.status);
-                        //                        if (xhr.status == 400) {
-                        //                            alert("Error: username alredy exists.");
-                        //                        } else {
-                        //                            alert("Error: connection lost");
-                        //
-                        //                        }
+                        alert("Error: connection failed.");
                     }
                 });
             });
