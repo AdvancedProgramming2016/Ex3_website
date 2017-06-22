@@ -21,6 +21,7 @@
 <button id="get">Get user</button>
 <button id="start">Start</button>
 <button id="join">Join</button>
+<button id="update">Update</button>
 <button id="close">Close</button>
 
 <br/><br/>Enter game name:<input type="text" id="gameTxt"/><br/>
@@ -148,6 +149,36 @@ Enter message: <input type="text" id="msgText"/><br/>
 //                            alert("Error: connection lost");
 //
 //                        }
+                    }
+                });
+            });
+
+        $("#update").on('click',
+            function () {
+                $.ajax({
+                    type: 'PUT',
+                    url: '../../api/Users',
+                    data: {
+                        Username: "John Doe",
+                        Password: "4444",
+                        Email: "newmail@aaa.com",
+                        GamesWon: 0,
+                        GamesLost: 0
+                    },
+
+                    success: function (response) {
+                        alert(response.Username);
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        alert(xhr.status);
+                        //                        if (xhr.status == 400) {
+                        //                            alert("Error: username alredy exists.");
+                        //                        } else {
+                        //                            alert("Error: connection lost");
+                        //
+                        //                        }
                     }
                 });
             });

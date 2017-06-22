@@ -51,17 +51,17 @@ namespace Ex3_website.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutUser(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
+            
+//            if (id != user.Id)
+//            {
+//                return BadRequest();
+//            }
 
             db.Entry(user).State = EntityState.Modified;
 
@@ -71,7 +71,7 @@ namespace Ex3_website.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!UserExists(user.Id))
                 {
                     return NotFound();
                 }
