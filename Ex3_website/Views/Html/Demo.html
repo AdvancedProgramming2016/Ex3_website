@@ -156,14 +156,11 @@ Enter message: <input type="text" id="msgText"/><br/>
         $("#update").on('click',
             function() {
                 $.ajax({
-                    type: 'PUT',
+                    type: 'GET',
                     url: '../../api/Users',
                     data: {
-                        Username: "John Doe",
-                        Password: "4444",
-                        Email: "newmail@aaa.com",
-                        GamesWon: 0,
-                        GamesLost: 0
+                        username: "John Doe",
+                        isWon: false
                     },
 
                     success: function(response) {

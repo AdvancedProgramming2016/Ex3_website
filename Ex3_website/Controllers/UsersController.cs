@@ -51,26 +51,36 @@ namespace Ex3_website.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(User user)
+        [HttpGet]
+        public async Task<IHttpActionResult> UpdateUser(string username, bool isWon)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            //Get user by username.
             var users = await db.Users
-                .Where(u => u.Username == user.Username) .ToListAsync();
+                .Where(u => u.Username == username) .ToListAsync();
 
             if (users.Count == 0)
             {
                 return NotFound();
             }
 
-            User userWithId = users.First();
-            userWithId.GamesWon = user.GamesWon;
-            userWithId.GamesLost = user.GamesLost;
+            User user = users.First();
 
-            db.Entry(userWithId).State = EntityState.Modified;
+            //Check if user won or lost.
+            if (isWon)
+            {
+                user.GamesWon = user.GamesWon + 1;
+            }
+            else
+            {
+                user.GamesLost = user.GamesLost + 1;
+            }
+              
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -78,7 +88,7 @@ namespace Ex3_website.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(userWithId.Id))
+                if (!UserExists(user.Id))
                 {
                     return NotFound();
                 }
