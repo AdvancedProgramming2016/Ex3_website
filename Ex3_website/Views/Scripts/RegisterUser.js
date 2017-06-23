@@ -1,5 +1,8 @@
 ﻿jQuery(function ($) {
 
+    //Load navbar.
+    $("#loginNav").load("Navbar.html");
+
     $("#submit").on('click', function () {
 
         if ($("#password").val() != $("#confirmPassword").val()) {

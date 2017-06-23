@@ -1,5 +1,6 @@
 ﻿jQuery(function ($) {
 
+    $("#loader").hide();
     var mazeName = undefined;
     var maze = undefined;
     var rows = undefined;
@@ -22,6 +23,7 @@
     var playerColor = "#FF0000";
     var emptyColor = "#FFFFFF";
     var context = undefined;
+    var win = undefined;
 
     var commandsHub = $.connection.commandsHub;
 
@@ -52,12 +54,15 @@
 
         if (opponentIPos == goalPosRow && opponentJPos == goalPosCol) {
             alert("Opponent won!");
+            win = false;
+            commandsHub.server.close();
         }
     };
 
     // The maze from the server
     commandsHub.client.gotMaze = function (jsonMaze) {
 
+        $("#loader").hide();
         maze = jsonMaze.Maze;
         rows = parseInt(jsonMaze.Rows);
         cols = parseInt(jsonMaze.Cols);
@@ -127,6 +132,7 @@
             var rows = $("#rows").val();
             var cols = $("#columns").val();
             commandsHub.server.startGame(gameName, rows, cols);
+            $("#loader").show();
         });
 
         $("#joinButton").click(function () {
@@ -227,6 +233,8 @@
                     // If player reached goal position.
                     if (parseInt(playerIPosition) == goalPosRow && parseInt(playerJPosition) == goalPosCol) {
                         alert("You won!");
+                        win = true;
+                        commandsHub.server.close();
                     }
 
                     // Update opponent with position.
@@ -238,8 +246,20 @@
             commandsHub.server.getListOfGames();
         });
 
-        $("#close").click(function() {
-            commandsHub.server.close();
-        });
+    });
+    $ajax({
+        type: 'GET',
+        url: '../../api/Users',
+        data: {
+            username: $("username").val(),
+            isWon: win
+        },
+        dataType: 'json',
+        success: function (response) {
+            
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert("Error with connection");
+        }
     });
 });

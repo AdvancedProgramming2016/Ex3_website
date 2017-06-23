@@ -20,7 +20,9 @@
                 success: function (response) {
 
                     sessionStorage.setItem("username", username);
-                    alert(sessionStorage.getItem("username"));
+                    // Update the navbar.
+                    
+                    //alert(sessionStorage.getItem("username"));
                 },
 
                 error: function (xhr, textStatus, errorThrown) {

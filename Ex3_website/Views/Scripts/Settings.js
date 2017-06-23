@@ -1,10 +1,5 @@
 ﻿jQuery(function ($) {
 
-    // Set the default values.
-    localStorage.setItem("defaultNumOfRows", "15");
-    localStorage.setItem("defaultNumOfCols", "15");
-    localStorage.setItem("defaultAlgo", "Dfs");
-
     // Place the default values in html page.
     document.getElementById("defaultNumOfRows").value = localStorage.getItem("defaultNumOfRows");
     document.getElementById("defaultNumOfCols").value = localStorage.getItem("defaultNumOfCols");
