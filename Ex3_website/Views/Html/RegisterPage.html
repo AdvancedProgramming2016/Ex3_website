@@ -3,83 +3,37 @@
 <head>
     <title>Register</title>
     <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../Content/bootstrap.min.css" />
-    <script src="../Scripts/jquery-1.9.1.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="../Scripts/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../Content/bootstrap-theme.min.css" />
-    <link href="../Styles/InputForm.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Bootstrap/Content/bootstrap.min.css" />
+    <script src="../../Bootstrap/Scripts/jquery-1.9.1.js"></script>
+    <script src="../../Bootstrap/Scripts/bootstrap.min.js"></script>
+    <link href="../Css/Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../Bootstrap/Content/bootstrap-theme.min.css" />
     <script src="../Scripts/RegisterUser.js"></script>
 </head>
 <body>
-    <div id="loginNav">
+    <div id="navBar">
 
     </div>
-    <nav class="navbar navbar-inverse bg-primary">
-        <div class="container-fluid">
-            <!--Logo-->
-            <div class="navbar-header">
-                <a href="#" class="navbar-brand">THE MAZE</a>
-            </div>
-            <!--Menu items-->
-            <div>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="HomePage.html">Home</a>
-                    </li>
-                    <!--Dropdown menu-->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Games <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">Single player</a>
-                            </li>
-                            <li>
-                                <a href="#">Multiplayer</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="#">Settings</a>
-                    </li>
-                    <li>
-                        <a href="UserRankingsPage.html">User Rankings</a>
-                    </li>
-                </ul>
-                <!--Right align-->
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active">
-                        <a href="RegisterPage.html">Register</a>
-                    </li>
-                    <li>
-                        <a href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <div style="padding-top: 50px">
         <div class="container block">
-            <form>
-                <fieldset>
-                    <legend style="font-weight: bold">Register</legend>
-                </fieldset>
+            <fieldset>
+                <legend style="font-weight: bold">Register</legend>
+            </fieldset>
 
-                <label>Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter username">
+            <label>Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter username">
 
-                <label>Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter password">
+            <label>Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password">
 
-                <label>Confirm password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password">
+            <label>Confirm password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password">
 
-                <label>Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter email">
-                <input type="submit" value="Submit" id="submit">
-            </form>
+            <label>Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter email">
+            <button id="submitButton" class="submitButton">submit</button>
         </div>
     </div>
 
