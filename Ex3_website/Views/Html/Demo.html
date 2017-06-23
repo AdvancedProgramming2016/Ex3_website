@@ -21,6 +21,7 @@
 <button id="get">Get user</button>
 <button id="start">Start</button>
 <button id="join">Join</button>
+<button id="update">Update</button>
 <button id="close">Close</button>
 
 <br/><br/>Enter game name:<input type="text" id="gameTxt"/><br/>
@@ -139,7 +140,7 @@ Enter message: <input type="text" id="msgText"/><br/>
                         alert(response.Username);
                     },
 
-                    error: function (xhr, textStatus, errorThrown) {
+                    error: function(xhr, textStatus, errorThrown) {
 
                         alert(xhr.status);
 //                        if (xhr.status == 400) {
@@ -148,6 +149,27 @@ Enter message: <input type="text" id="msgText"/><br/>
 //                            alert("Error: connection lost");
 //
 //                        }
+                    }
+                });
+            });
+
+        $("#update").on('click',
+            function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '../../api/Users',
+                    data: {
+                        username: "John Doe",
+                        isWon: false
+                    },
+
+                    success: function(response) {
+                        alert(response.Username);
+                    },
+
+                    error: function(xhr, textStatus, errorThrown) {
+
+                        alert("Error: connection failed.");
                     }
                 });
             });
