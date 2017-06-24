@@ -1,15 +1,19 @@
-﻿jQuery(function ($) {
+﻿$(function() {
 
+   
     var username = sessionStorage.getItem("username");
-
+   
+    //Check if user logged in.
     if (username != null) {
-        $("#register").innerHTML = username;
-        $("#register").href = "";
-        $("#login").innerHTML = "Log off";
-        $("#login").href = "Login.html";
+       
+        $("#register").text(username);
+        $("#register").attr("href", "#");
+        $("#login").text("Log out");
+        $("#login").attr("href", "HomePage.html");
     }
 
-    $("#login").click(function () {
+
+    $("#login").click(function() {
 
         // The user is logged in and wants to log off.
         if (sessionStorage.getItem("username") != null) {

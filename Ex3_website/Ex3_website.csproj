@@ -187,6 +187,7 @@
     <Content Include="Views\Html\Settings.html" />
     <Content Include="Views\Html\SinglePlayerGame.html" />
     <Content Include="Views\Html\UserRankingsPage.html" />
+    <Content Include="Views\Resources\mazeLogo.png" />
     <Content Include="Views\Scripts\HomePage.js" />
     <Content Include="Views\Scripts\Login.js" />
     <Content Include="Views\Scripts\MultiplayerGame.js" />

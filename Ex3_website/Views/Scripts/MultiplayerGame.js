@@ -1,6 +1,37 @@
-﻿jQuery(function ($) {
+﻿jQuery(function($) {
+
+    //Load navbar.
+    $("#multiNav").load("Navbar.html",
+        function() {
+            var username = sessionStorage.getItem("username");
+
+            $("#logoutTab").hide();
+
+            if (username != null) {
+
+                $("#register").text(username);
+                $("#register").attr("href", "#");
+                $("#login").text("Log out");
+                $("#loginTab").hide();
+                $("#logoutTab").show();
+                $("#logout").on('click',
+                    function () {
+                        sessionStorage.removeItem("username");
+                        window.location.replace("Homepage.html");
+                    });
+            }
+        });
+
+    $("#multiError").hide();
+
+    //Set default rows and columns.
+    $("#rows").val(localStorage.getItem("defaultNumOfRows"));
+    $("#columns").val(localStorage.getItem("defaultNumOfCols"));
 
     $("#loader").hide();
+    $("#myCanvas").hide();
+    $("#opponentCanvas").hide();
+
     var mazeName = undefined;
     var maze = undefined;
     var rows = undefined;
@@ -28,7 +59,7 @@
     var commandsHub = $.connection.commandsHub;
 
     //Handle received command from hub.
-    commandsHub.client.gotCommand = function (command) {
+    commandsHub.client.gotCommand = function(command) {
 
         var opponentIPos;
         var opponentJPos;
@@ -41,13 +72,17 @@
 
         // Clear previous place.
         context.fillStyle = emptyColor;
-        context.fillRect(cellWidth * opponentPlayerJPosition, cellHeight * opponentPlayerIPosition,
-                        cellWidth, cellHeight);
+        context.fillRect(cellWidth * opponentPlayerJPosition,
+            cellHeight * opponentPlayerIPosition,
+            cellWidth,
+            cellHeight);
 
         // Color new opponent position.
         context.fillStyle = playerColor;
-        context.fillRect(cellWidth * opponentJPos, cellHeight * opponentIPos,
-                        cellWidth, cellHeight);
+        context.fillRect(cellWidth * opponentJPos,
+            cellHeight * opponentIPos,
+            cellWidth,
+            cellHeight);
 
         opponentPlayerIPosition = opponentIPos;
         opponentPlayerJPosition = opponentJPos;
@@ -60,7 +95,7 @@
     };
 
     // The maze from the server
-    commandsHub.client.gotMaze = function (jsonMaze) {
+    commandsHub.client.gotMaze = function(jsonMaze) {
 
         $("#loader").hide();
         maze = jsonMaze.Maze;
@@ -85,24 +120,28 @@
                     // Color the wall.
                     if (maze.charAt(i * rows + j) == 1) {
                         context.fill = wallColor;
-                        context.fillRect(cellWidth * j, cellHeight * i,
-                        cellWidth, cellHeight);
-                    }
-                    else if (initPosRow == i && initPosCol == j) { // Color the players initial position.
+                        context.fillRect(cellWidth * j,
+                            cellHeight * i,
+                            cellWidth,
+                            cellHeight);
+                    } else if (initPosRow == i && initPosCol == j) { // Color the players initial position.
                         playerIPosition = parseInt(i);
                         playerJPosition = parseInt(j);
                         opponentPlayerIPosition = parseInt(i);
                         opponentPlayerJPosition = parseInt(j);
                         context.fillStyle = playerColor;
-                        context.fillRect(cellWidth * j, cellHeight * i,
-                        cellWidth, cellHeight);
+                        context.fillRect(cellWidth * j,
+                            cellHeight * i,
+                            cellWidth,
+                            cellHeight);
                         context.fillStyle = wallColor;
-                    }
-                    else if (goalPosRow == i && goalPosCol == j) // Color the goal position.
+                    } else if (goalPosRow == i && goalPosCol == j) // Color the goal position.
                     {
                         context.fillStyle = "blue";
-                        context.fillRect(cellWidth * j, cellHeight * i,
-                            cellWidth, cellHeight);
+                        context.fillRect(cellWidth * j,
+                            cellHeight * i,
+                            cellWidth,
+                            cellHeight);
                         context.fillStyle = wallColor;
                     }
                 }
@@ -111,9 +150,12 @@
 
         drawMaze("myCanvas");
         drawMaze("opponentCanvas");
+
+        $("#myCanvas").show();
+        $("#opponentCanvas").show();
     }
 
-    commandsHub.client.gotListOfGames = function (gamesListInJsonFormat) {
+    commandsHub.client.gotListOfGames = function(gamesListInJsonFormat) {
         var list = JSON.parse(gamesListInJsonFormat);
 
         // Empty the list before appending to it.
@@ -127,107 +169,139 @@
 
     $.connection.hub.start().done(function() {
 
-        $("#startButton").click( function () {
+        $("#startButton").click(function() {
+
+            $("#multiError").hide();
+
             var gameName = $("#gameName").val();
             var rows = $("#rows").val();
             var cols = $("#columns").val();
-            commandsHub.server.startGame(gameName, rows, cols);
-            $("#loader").show();
+
+            if (gameName == "") {
+
+                $("#multiError").show().text("Game name can't be empty");
+            } else if (rows == "") {
+
+                $("#multiError").show().text("Rows can't be empty");
+            } else if (cols == "") {
+
+                $("#multiError").show().text("Columns can't be empty");
+            } else {
+
+                commandsHub.server.startGame(gameName, rows, cols);
+                $("#loader").show();
+            }
         });
 
-        $("#joinButton").click(function () {
+        $("#joinButton").click(function() {
             commandsHub.server.joinGame($("#gamesList").val());
         });
 
         //Send command to opponent.
         $("body").on("keydown",
-            function (e) {
+            function(e) {
                 if (maze && (e.which == right || e.which == left || e.which == up || e.which == down)) {
                     var pressedKey = e.which;
                     var myCanvas = document.getElementById("myCanvas");
                     context = myCanvas.getContext("2d");
                     switch (pressedKey) {
-                        case right:
-                            // If the right block is not a wall.
-                            if ((maze.charAt(parseInt(playerIPosition) * rows + parseInt(playerJPosition) + 1) != 1) &&
-                                (parseInt(playerJPosition) + 1 < cols)) {
+                    case right:
+                        // If the right block is not a wall.
+                        if ((maze.charAt(parseInt(playerIPosition) * rows + parseInt(playerJPosition) + 1) != 1) &&
+                            (parseInt(playerJPosition) + 1 < cols)) {
 
-                                // Color the previous position cell.
-                                context.fillStyle = emptyColor;
-                                context.fillRect(cellWidth * playerJPosition,
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
+                            // Color the previous position cell.
+                            context.fillStyle = emptyColor;
+                            context.fillRect(cellWidth * playerJPosition,
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
 
-                                // Update player coordinate.
-                                playerJPosition += 1;
+                            // Update player coordinate.
+                            playerJPosition += 1;
 
-                                // Color the new location of player.
-                                context.fillStyle = playerColor;
-                                context.fillRect(cellWidth * playerJPosition,
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
-                            }
-                            break;
+                            // Color the new location of player.
+                            context.fillStyle = playerColor;
+                            context.fillRect(cellWidth * playerJPosition,
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
+                        }
+                        break;
 
-                        case left:
+                    case left:
 
-                            // If the left block is not a wall.
-                            if ((maze.charAt(parseInt(playerIPosition) * rows + parseInt(playerJPosition) - 1) != 1) &&
-                                (parseInt(playerJPosition) - 1 >= 0)) {
+                        // If the left block is not a wall.
+                        if ((maze.charAt(parseInt(playerIPosition) * rows + parseInt(playerJPosition) - 1) != 1) &&
+                            (parseInt(playerJPosition) - 1 >= 0)) {
 
-                                // Color the previous position cell.
-                                context.fillStyle = emptyColor;
-                                context.fillRect(cellWidth * playerJPosition,
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
+                            // Color the previous position cell.
+                            context.fillStyle = emptyColor;
+                            context.fillRect(cellWidth * playerJPosition,
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
 
-                                // Update player coordinate.
-                                playerJPosition -= 1;
+                            // Update player coordinate.
+                            playerJPosition -= 1;
 
-                                // Color the new location of player.
-                                context.fillStyle = playerColor;
-                                context.fillRect(cellWidth * playerJPosition,
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
-                            }
-                            break;
+                            // Color the new location of player.
+                            context.fillStyle = playerColor;
+                            context.fillRect(cellWidth * playerJPosition,
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
+                        }
+                        break;
 
-                        case up:
+                    case up:
 
-                            // If the upper block is not a wall.
-                            if ((maze.charAt((parseInt(playerIPosition) - 1) * rows + parseInt(playerJPosition)) != 1) &&
-                                (parseInt(playerIPosition) - 1 >= 0)) {
+                        // If the upper block is not a wall.
+                        if ((maze.charAt((parseInt(playerIPosition) - 1) * rows + parseInt(playerJPosition)) != 1) &&
+                            (parseInt(playerIPosition) - 1 >= 0)) {
 
-                                // Color the previous position cell.
-                                context.fillStyle = emptyColor;
-                                context.fillRect(cellWidth * parseInt(playerJPosition),
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
+                            // Color the previous position cell.
+                            context.fillStyle = emptyColor;
+                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
 
-                                // Update player coordinate.
-                                playerIPosition -= 1;
+                            // Update player coordinate.
+                            playerIPosition -= 1;
 
-                                // Color the new location of player.
-                                context.fillStyle = playerColor;
-                                context.fillRect(cellWidth * parseInt(playerJPosition),
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
-                            }
-                            break;
+                            // Color the new location of player.
+                            context.fillStyle = playerColor;
+                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
+                        }
+                        break;
 
-                        case down:
-                            // If the downer block is not a wall.
-                            if ((maze.charAt((parseInt(playerIPosition) + 1) * rows + parseInt(playerJPosition)) != 1)
-                                && (parseInt(playerIPosition) + 1 < rows)) {
+                    case down:
+                        // If the downer block is not a wall.
+                        if ((maze.charAt((parseInt(playerIPosition) + 1) * rows + parseInt(playerJPosition)) != 1) &&
+                            (parseInt(playerIPosition) + 1 < rows)) {
 
-                                // Color the previous position cell.
-                                context.fillStyle = emptyColor;
-                                context.fillRect(cellWidth * parseInt(playerJPosition),
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
+                            // Color the previous position cell.
+                            context.fillStyle = emptyColor;
+                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
 
-                                // Update player coordinate.
-                                playerIPosition += 1;
+                            // Update player coordinate.
+                            playerIPosition += 1;
 
-                                // Color the new location of player.
-                                context.fillStyle = playerColor;
-                                context.fillRect(cellWidth * parseInt(playerJPosition),
-                                    cellHeight * playerIPosition, cellWidth, cellHeight);
-                            }
-                            break;
+                            // Color the new location of player.
+                            context.fillStyle = playerColor;
+                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
+                        }
+                        break;
                     }
 
                     // If player reached goal position.
@@ -238,11 +312,12 @@
                     }
 
                     // Update opponent with position.
-                    commandsHub.server.sendCommand(mazeName, parseInt(playerIPosition) + "," + parseInt(playerJPosition));
+                    commandsHub.server.sendCommand(mazeName,
+                        parseInt(playerIPosition) + "," + parseInt(playerJPosition));
                 }
-        });
+            });
 
-        $("#gamesList").click(function () {
+        $("#gamesList").click(function() {
             commandsHub.server.getListOfGames();
         });
 
@@ -255,10 +330,10 @@
             isWon: win
         },
         dataType: 'json',
-        success: function (response) {
-            
+        success: function(response) {
+
         },
-        error: function (xhr, textStatus, errorThrown) {
+        error: function(xhr, textStatus, errorThrown) {
             alert("Error with connection");
         }
     });

@@ -2,42 +2,79 @@
 <html>
 <head>
     <title>Settings page</title>
-    <meta charset="utf-8" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../Bootstrap/Content/bootstrap.min.css"/>
+    <script src="../../Bootstrap/Scripts/jquery-1.9.1.js"></script>
+    <script src="../../Bootstrap/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../Bootstrap/Content/bootstrap-theme.min.css"/>
+    <link href="../Css/Style.css" rel="stylesheet"/>
     <script src="../Scripts/Settings.js"></script>
-    <style>
-        .settingsOptions {
-            border-radius: 3px;
-        }
-    </style>
+    <script src="../Scripts/Navbar.js"></script>
 </head>
 <body>
-    <h1>Settings</h1>
-    <table>
-        <tr>
-            <td><b>Default number of Rows:</b></td>
-            <td><input type="number" class="settingsOptions" id="defaultNumOfRows" placeholder="No. of rows"></td>
-        </tr>
-        <tr>
-            <td><b>Default number of Cols:</b></td>
-            <td><input type="number" class="settingsOptions" id="defaultNumOfCols" placeholder="No. of coloms"></td>
-        </tr>
-        <tr>
-            <td><b>Default Search Algo:</b></td>
-            <td>
-                <select name="algorithms" id="defaultAlgo">
-                    <option value="Dfs">Dfs</option>
-                    <option value="Bfs">Bfs</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input type="button" class="btn" id="updateSettingsButton" value="Update" />
-            </td>
-        </tr>
-    </table>
-    <div id="settingsUpdated"></div>
+<div id="settingsNav">
+</div>
+<div style="padding-top: 50px">
+    <div class="container block">
+        <fieldset>
+            <legend style="font-weight: bold">Settings</legend>
+        </fieldset>
+        <!--Start-->
+        <label>Default number of Rows</label>
+        <input type="number" id="defaultNumOfRows" name="defaultNumOfRows" placeholder="No. of rows">
+        <label>Default number of Columns</label>
+        <input type="number" id="defaultNumOfCols" name="defaultNumOfCols" placeholder="No. of columns">
+        <label>Default search algorithm</label>
+         <select name="algorithms" id="defaultAlgo">
+         <option value="Dfs">Dfs</option>
+         <option value="Bfs">Bfs</option>
+         </select>
+        <button id="updateSettingsButton"class="submitButton">Update</button>
+        <br/>
+        <br/>
+        <div class="alert alert-danger" id="settingsError"></div>
+        <div class="alert alert-success" id="settingsSuccess"></div>
+    </div>
+
+</div>
+
+<!-- <h1>Settings</h1>-->
+<!-- <table>-->
+<!-- <tr>-->
+<!-- <td>
+    <b>Default number of Rows:</b>
+</td>-->
+<!-- <td>
+    <input type="number" class="settingsOptions" id="defaultNumOfRows" placeholder="No. of rows">
+</td>-->
+<!-- </tr>-->
+<!-- <tr>-->
+<!-- <td>
+    <b>Default number of Cols:</b>
+</td>-->
+<!-- <td>
+    <input type="number" class="settingsOptions" id="defaultNumOfCols" placeholder="No. of coloms">
+</td>-->
+<!-- </tr>-->
+<!-- <tr>-->
+<!-- <td>
+    <b>Default Search Algo:</b>
+</td>-->
+<!-- <td>-->
+<!-- <select name="algorithms" id="defaultAlgo">-->
+<!-- <option value="Dfs">Dfs</option>-->
+<!-- <option value="Bfs">Bfs</option>-->
+<!-- </select>-->
+<!-- </td>-->
+<!-- </tr>-->
+<!-- <tr>-->
+<!-- <td></td>-->
+<!-- <td>-->
+<!-- <input type="button" class="btn" id="updateSettingsButton" value="Update"/>-->
+<!-- </td>-->
+<!-- </tr>-->
+<!-- </table>-->
+<!-- <div id="settingsUpdated"></div>-->
 </body>
 </html>
