@@ -8,6 +8,7 @@
 
             $("#logoutTab").hide();
 
+            //Check if user is logged in.
             if (username != null) {
 
                 $("#register").text(username);
@@ -78,7 +79,9 @@
             }
         });
 
+    //Validates email.
     function isEmail(email) {
+
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
     }

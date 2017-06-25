@@ -128,6 +128,11 @@ namespace Ex3_website.Controllers
             return CreatedAtRoute("DefaultApi", new {id = user.Id}, user);
         }
 
+        /// <summary>
+        /// Computes hash code.
+        /// </summary>
+        /// <param name="input">raw input.</param>
+        /// <returns>Encrypted input.</returns>
         private string ComputeHash(string input)
         {
             SHA1 sha = SHA1.Create();

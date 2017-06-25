@@ -15,7 +15,7 @@
                 $("#loginTab").hide();
                 $("#logoutTab").show();
                 $("#logout").on('click',
-                    function () {
+                    function() {
                         sessionStorage.removeItem("username");
                         window.location.replace("Homepage.html");
                     });
@@ -24,6 +24,7 @@
 
     $("#singleError").hide();
     $("#mazeCanvas").hide();
+    $("#solveMaze").prop('disabled', true);
 
     $("#mazeRows").val(localStorage.getItem("defaultNumOfRows"));
     $("#mazeCols").val(localStorage.getItem("defaultNumOfCols"));
@@ -64,12 +65,20 @@
                         if ((maze.charAt(playerIPosition * rows + playerJPosition + 1) != 1) &&
                             (playerJPosition + 1 < cols)) {
 
-                            // Color the previous position cell.
-                            context.fillStyle = emptyColor;
-                            context.fillRect(cellWidth * playerJPosition,
-                                cellHeight * playerIPosition,
-                                cellWidth,
-                                cellHeight);
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                context.fillStyle = "blue";
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            } else {
+                                // Color the previous position cell.
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerJPosition += 1;
@@ -81,6 +90,11 @@
                                 cellWidth,
                                 cellHeight);
                         }
+
+                        // If player reached goal position.
+                        if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                            alert("You won!");
+                        }
                         break;
 
                     case left:
@@ -89,12 +103,20 @@
                         if ((maze.charAt(playerIPosition * rows + playerJPosition - 1) != 1) &&
                             (playerJPosition - 1 >= 0)) {
 
-                            // Color the previous position cell.
-                            context.fillStyle = emptyColor;
-                            context.fillRect(cellWidth * playerJPosition,
-                                cellHeight * playerIPosition,
-                                cellWidth,
-                                cellHeight);
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                context.fillStyle = "blue";
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            } else {
+                                // Color the previous position cell.
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerJPosition -= 1;
@@ -106,6 +128,11 @@
                                 cellWidth,
                                 cellHeight);
                         }
+
+                        // If player reached goal position.
+                        if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                            alert("You won!");
+                        }
                         break;
 
                     case up:
@@ -114,12 +141,20 @@
                         if ((maze.charAt((playerIPosition - 1) * rows + playerJPosition) != 1) &&
                             (playerIPosition - 1 >= 0)) {
 
-                            // Color the previous position cell.
-                            context.fillStyle = emptyColor;
-                            context.fillRect(cellWidth * playerJPosition,
-                                cellHeight * playerIPosition,
-                                cellWidth,
-                                cellHeight);
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                context.fillStyle = "blue";
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            } else {
+                                // Color the previous position cell.
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerIPosition -= 1;
@@ -131,6 +166,11 @@
                                 cellWidth,
                                 cellHeight);
                         }
+
+                        // If player reached goal position.
+                        if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                            alert("You won!");
+                        }
                         break;
 
                     case down:
@@ -138,12 +178,20 @@
                         if ((maze.charAt((playerIPosition + 1) * rows + playerJPosition) != 1) &&
                             (playerIPosition + 1 < rows)) {
 
-                            // Color the previous position cell.
-                            context.fillStyle = emptyColor;
-                            context.fillRect(cellWidth * playerJPosition,
-                                cellHeight * playerIPosition,
-                                cellWidth,
-                                cellHeight);
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                context.fillStyle = "blue";
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            } else {
+                                // Color the previous position cell.
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerIPosition += 1;
@@ -155,15 +203,15 @@
                                 cellWidth,
                                 cellHeight);
                         }
+
+                        // If player reached goal position.
+                        if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                            alert("You won!");
+                        }
                         break;
                     }
-
-                    // If player reached goal position.
-                    if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                        alert("You won!");
-                    }
                 }
-            });
+            })
     });
 
     $("#btnStartNewGame").on('click',
@@ -244,6 +292,8 @@
                             }
                         }
 
+                        $("#solveMaze").prop('disabled', false);
+
                     },
 
                     error: function(xhr, textStatus, errorThrown) {
@@ -268,6 +318,23 @@
                     var intervalId;
                     var i = 0;
                     var reverseSolution = reverseString(response.Solution);
+
+                    // Remove player current rectangle.
+                    context.fillStyle = emptyColor;
+                    context.fillRect(cellWidth * playerJPosition,
+                        cellHeight * playerIPosition,
+                        cellWidth,
+                        cellHeight);
+
+                    // Place player in initial rectangle.
+                    playerJPosition = initPosCol;
+                    playerIPosition = initPosRow;
+
+                    context.fillStyle = playerColor;
+                    context.fillRect(cellWidth * playerJPosition,
+                        cellHeight * playerIPosition,
+                        cellWidth,
+                        cellHeight);
 
                     intervalId = setInterval(function() {
                             switch (reverseSolution.charAt(i)) {

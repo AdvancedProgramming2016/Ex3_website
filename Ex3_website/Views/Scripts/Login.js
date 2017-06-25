@@ -8,6 +8,7 @@
 
             $("#logoutTab").hide();
 
+            //Check if user is logged in.
             if (username != null) {
 
                 $("#register").text(username);
@@ -16,15 +17,16 @@
                 $("#loginTab").hide();
                 $("#logoutTab").show();
                 $("#logout").on('click',
-                    function () {
+                    function() {
                         sessionStorage.removeItem("username");
                         window.location.replace("Homepage.html");
                     });
             }
         });
-    
+
     $("#loginError").hide();
 
+    //Login button click.
     $("#loginButton").on('click',
         function() {
 
@@ -53,15 +55,12 @@
                     success: function(response) {
 
                         sessionStorage.setItem("username", username);
-                        // Update the navbar.
-
-                        //alert(sessionStorage.getItem("username"));
 
                         window.location.replace("Homepage.html");
                     },
 
                     error: function(xhr, textStatus, errorThrown) {
-                        //alert("Error: connection lost");
+
                         if (xhr.status == 404) {
                             $("#loginError").show().text("Wrong username or password.");
 
@@ -72,7 +71,5 @@
                     }
                 });
             }
-
-
         });
 });

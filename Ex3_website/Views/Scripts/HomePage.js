@@ -8,6 +8,7 @@
 
             $("#logoutTab").hide();
 
+            //Check if user is logged in.
             if (username != null) {
 
                 $("#register").text(username);
@@ -22,6 +23,7 @@
                     });
             }
 
+            //Change welcome message.
             if (username != null) {
 
                 $("#paragraph").text("You can now play multiplayer games.");

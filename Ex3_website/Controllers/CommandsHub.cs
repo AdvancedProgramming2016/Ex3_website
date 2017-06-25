@@ -24,49 +24,11 @@ namespace Ex3_website.Controllers
         private static MultiPlayerModel model = new MultiPlayerModel();
 
         /// <summary>
-        /// Holds a collection of all the active games.
+        /// Starts a new game.
         /// </summary>
-//        private static readonly ConcurrentDictionary<string, CommunicationSet>
-//            activeGames =
-//                new ConcurrentDictionary<string, CommunicationSet>();
-
-//        /// <summary>
-//        /// Adds a new connection to a game.
-//        /// </summary>
-//        /// <param name="gameName">Game name.</param>
-//        public void Connect(string gameName)
-//        {
-//            CommunicationSet communicationSet;
-//
-//            //Check if game already exists.
-//            if (activeGames.ContainsKey(gameName))
-//            {
-//                communicationSet = activeGames[gameName];
-//                communicationSet.AddPlayer(Context.ConnectionId);
-//            }
-//            else
-//            {
-//                communicationSet = new CommunicationSet();
-//                communicationSet.AddPlayer(Context.ConnectionId);
-//                activeGames.GetOrAdd(gameName, communicationSet);
-//            }
-//        }
-//
-//        /// <summary>
-//        /// Remove game from active games collection.
-//        /// </summary>
-//        /// <param name="gameName">Game name.</param>
-//        public void Disconnect(string gameName)
-//        {
-//            //Check if the game exists in the collection.
-//            if (!activeGames.ContainsKey(gameName))
-//            {
-//                return;
-//            }
-//
-//            CommunicationSet communicationSet;
-//            activeGames.TryRemove(gameName, out communicationSet);
-//        }
+        /// <param name="mazeName">Maze name.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="columns">Columns.</param>
         public void StartGame(string mazeName, string rows, string columns)
         {
             //Start a new game.
@@ -76,24 +38,30 @@ namespace Ex3_website.Controllers
             //Check if game was created.
             if (maze == null)
             {
-                //TODO return null to user
+                Clients.Client(Context.ConnectionId).gotError("Maze exists");
             }
-
-            //Parse maze to json.
-            //JObject jsonMaze = ToJsonParser.ToJson(maze);
         }
 
+        /// <summary>
+        /// Joins to an existing game.
+        /// </summary>
+        /// <param name="mazeName">Maze name.</param>
         public void JoinGame(string mazeName)
         {
             GameRoom room = model.JoinGame(mazeName, Context.ConnectionId);
 
+            //Parse maze to json.
             Maze maze = room.RoomMaze;
             JObject jsonMaze = ToJsonParser.ToJson(maze);
 
+            //Send the maze to both players.
             Clients.Client(room.PlayerOne.ConnectionId).gotMaze(jsonMaze);
             Clients.Client(room.PlayerTwo.ConnectionId).gotMaze(jsonMaze);
         }
 
+        /// <summary>
+        /// Gets the list of games.
+        /// </summary>
         public void GetListOfGames()
         {
             IList<string> gamesList = model.GetGamesList();
@@ -102,6 +70,7 @@ namespace Ex3_website.Controllers
             string gamesListInJsonFormat =
                 JsonConvert.SerializeObject(gamesList);
 
+            //Send the list to the client.
             Clients.Client(Context.ConnectionId)
                 .gotListOfGames(gamesListInJsonFormat);
         }
@@ -113,6 +82,7 @@ namespace Ex3_website.Controllers
         /// <param name="command">Command.</param>
         public void SendCommand(string gameName, string command)
         {
+            //Check if game room exists.
             if (!model.GameRooms.ContainsKey(gameName))
             {
                 return;
@@ -120,6 +90,7 @@ namespace Ex3_website.Controllers
 
             GameRoom room = model.GameRooms[gameName];
 
+            //Get opponent.
             Player opponent = room.GetOpponent(Context.ConnectionId);
 
             if (opponent == null)
@@ -127,6 +98,7 @@ namespace Ex3_website.Controllers
                 return;
             }
 
+            //Send command to opponent.
             Clients.Client(opponent.ConnectionId).gotCommand(command);
 
 //            CommunicationSet communicationSet = activeGames[gameName];
@@ -143,6 +115,7 @@ namespace Ex3_website.Controllers
 //            Clients.Client(opponentId).gotCommand(command);
         }
 
+        //TODO find usage
         public void Close(string mazeName)
         {
             model.Close(mazeName);

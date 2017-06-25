@@ -15,7 +15,7 @@
                 $("#loginTab").hide();
                 $("#logoutTab").show();
                 $("#logout").on('click',
-                    function () {
+                    function() {
                         sessionStorage.removeItem("username");
                         window.location.replace("Homepage.html");
                     });
@@ -93,6 +93,16 @@
             commandsHub.server.close();
         }
     };
+
+    commandsHub.client.gotError = function(error) {
+        
+        //Maze name already exists.
+        if (error == "Maze exists") {
+
+            $("#loader").hide();
+            $("#multiError").show().text("This game already exists");
+        }
+    }
 
     // The maze from the server
     commandsHub.client.gotMaze = function(jsonMaze) {
@@ -193,8 +203,21 @@
             }
         });
 
+        //Join button click.
         $("#joinButton").click(function() {
-            commandsHub.server.joinGame($("#gamesList").val());
+
+            $("#multiError").hide();
+
+            //Validate option was selected.
+            if ($("#gamesList").val() === null) {
+
+                $("#multiError").show().text("You have to choose a game");
+            } else {
+
+                //Send join command to server.
+                commandsHub.server.joinGame($("#gamesList").val());
+            }
+
         });
 
         //Send command to opponent.
@@ -322,19 +345,25 @@
         });
 
     });
-    $ajax({
-        type: 'GET',
-        url: '../../api/Users',
-        data: {
-            username: $("username").val(),
-            isWon: win
-        },
-        dataType: 'json',
-        success: function(response) {
 
-        },
-        error: function(xhr, textStatus, errorThrown) {
-            alert("Error with connection");
-        }
-    });
+
+    function updateScore() {
+
+        $.ajax({
+            type: 'GET',
+            url: '../../api/Users',
+            data: {
+                username: $("username").val(),
+                isWon: win
+            },
+            dataType: 'json',
+            success: function(response) {
+
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                alert("Error with connection");
+            }
+        });
+    }
+
 });
