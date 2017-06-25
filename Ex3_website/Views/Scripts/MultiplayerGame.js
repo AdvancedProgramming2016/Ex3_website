@@ -58,6 +58,21 @@
 
     var commandsHub = $.connection.commandsHub;
 
+    $.connection.hub.connectionSlow(function () {
+        alert("Error: connection failed.");
+        window.location.replace("Homepage.html");
+    });
+
+    $.connection.hub.disconnected(function () {
+        alert("Error: connection failed.");
+        window.location.replace("Homepage.html");
+    });
+
+    $.connection.hub.error(function (error) {
+        alert("Error: connection failed.");
+        window.location.replace("Homepage.html");
+    });
+
     //Handle received command from hub.
     commandsHub.client.gotCommand = function(command) {
 
@@ -90,7 +105,7 @@
         if (opponentIPos == goalPosRow && opponentJPos == goalPosCol) {
             alert("Opponent won!");
             win = false;
-            commandsHub.server.close();
+            //commandsHub.server.close();
         }
     };
 
@@ -220,6 +235,11 @@
 
         });
 
+        function closeGame(mazeName) {
+
+            commandsHub.server.close(mazeName);
+        }
+
         //Send command to opponent.
         $("body").on("keydown",
             function(e) {
@@ -331,7 +351,7 @@
                     if (parseInt(playerIPosition) == goalPosRow && parseInt(playerJPosition) == goalPosCol) {
                         alert("You won!");
                         win = true;
-                        commandsHub.server.close();
+                        closeGame(mazeName);
                     }
 
                     // Update opponent with position.
