@@ -229,6 +229,7 @@
 
             } else if ($("#mazeCols").val() == "") {
 
+                //TODO check if this check is necessary
                 $("#singleError").show().text("Columns can't be empty");
 
             } else {
@@ -242,56 +243,62 @@
                         columns: $("#mazeCols").val()
                     },
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
 
-                        $("#mazeCanvas").show();
+                        if (response == null) {
 
-                        name = response.Username;
-                        maze = response.Maze;
-                        rows = response.Rows;
-                        cols = response.Cols;
-                        initPosRow = response.InitialPos.Row;
-                        initPosCol = response.InitialPos.Col;
-                        goalPosRow = response.GoalPos.Row;
-                        goalPosCol = response.GoalPos.Col;
+                            $("#singleError").show().text("Maze already exists");
+                        } else {
+                            
+                            $("#mazeCanvas").show();
 
-                        document.title = name;
+                            name = response.Username;
+                            maze = response.Maze;
+                            rows = response.Rows;
+                            cols = response.Cols;
+                            initPosRow = response.InitialPos.Row;
+                            initPosCol = response.InitialPos.Col;
+                            goalPosRow = response.GoalPos.Row;
+                            goalPosCol = response.GoalPos.Col;
 
-                        var myCanvas = document.getElementById("mazeCanvas");
-                        context = mazeCanvas.getContext("2d");
-                        cellWidth = mazeCanvas.width / response.Cols;
-                        cellHeight = mazeCanvas.height / response.Rows;
+                            document.title = name;
 
-                        for (var i = 0; i < response.Rows; i++) {
-                            for (var j = 0; j < response.Cols; j++) {
+                            var myCanvas = document.getElementById("mazeCanvas");
+                            context = mazeCanvas.getContext("2d");
+                            cellWidth = mazeCanvas.width / response.Cols;
+                            cellHeight = mazeCanvas.height / response.Rows;
 
-                                // Color the wall.
-                                if (response.Maze.charAt(i * response.Rows + j) == 1) {
-                                    context.fill = wallColor;
-                                    context.fillRect(cellWidth * j,
-                                        cellHeight * i,
-                                        cellWidth,
-                                        cellHeight);
-                                } else if (response.InitialPos.Row == i &&
-                                    response.InitialPos.Col == j) { // Color the players initial position.
-                                    playerIPosition = i;
-                                    playerJPosition = j;
-                                    context.fillStyle = playerColor;
-                                    context.fillRect(cellWidth * j,
-                                        cellHeight * i,
-                                        cellWidth,
-                                        cellHeight);
-                                    context.fillStyle = wallColor;
-                                } else if (response.GoalPos.Row == i &&
-                                    response.GoalPos.Col == j) // Color the goal position.
-                                {
-                                    context.fillStyle = "blue";
-                                    context.fillRect(cellWidth * j, cellHeight * i, cellWidth, cellHeight);
-                                    context.fillStyle = wallColor;
+                            for (var i = 0; i < response.Rows; i++) {
+                                for (var j = 0; j < response.Cols; j++) {
+
+                                    // Color the wall.
+                                    if (response.Maze.charAt(i * response.Rows + j) == 1) {
+                                        context.fill = wallColor;
+                                        context.fillRect(cellWidth * j,
+                                            cellHeight * i,
+                                            cellWidth,
+                                            cellHeight);
+                                    } else if (response.InitialPos.Row == i &&
+                                        response.InitialPos.Col == j) { // Color the players initial position.
+                                        playerIPosition = i;
+                                        playerJPosition = j;
+                                        context.fillStyle = playerColor;
+                                        context.fillRect(cellWidth * j,
+                                            cellHeight * i,
+                                            cellWidth,
+                                            cellHeight);
+                                        context.fillStyle = wallColor;
+                                    } else if (response.GoalPos.Row == i &&
+                                        response.GoalPos.Col == j) // Color the goal position.
+                                    {
+                                        context.fillStyle = "blue";
+                                        context.fillRect(cellWidth * j, cellHeight * i, cellWidth, cellHeight);
+                                        context.fillStyle = wallColor;
+                                    }
                                 }
                             }
                         }
-
+                        
                         $("#solveMaze").prop('disabled', false);
 
                     },
