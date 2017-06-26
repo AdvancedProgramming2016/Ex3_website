@@ -2,6 +2,31 @@
 
     //TODO document all the js and html files.
 
+    //Load navbar.
+    $("#rankingsNav").load("Navbar.html",
+        function () {
+
+            var username = sessionStorage.getItem("username");
+
+            $("#logoutTab").hide();
+
+            if (username != null) {
+
+                $("#register").text(username);
+                $("#register").attr("href", "#");
+                $("#login").text("Log out");
+                $("#loginTab").hide();
+                $("#logoutTab").show();
+                $("#logout").on('click',
+                    function () {
+                        sessionStorage.removeItem("username");
+                        window.location.replace("Homepage.html");
+                    });
+            }
+        });
+
+    //TODO add spinner if needed
+
     //Requests the users list from the server.
     $.ajax({
         type: 'GET',

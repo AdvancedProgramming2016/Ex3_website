@@ -111,11 +111,6 @@ namespace Ex3_website.Models
             GameRoom room = GameRooms[mazeName];
             room.AddPlayer(connectionId);
 
-//            //Get maze from game room.
-//            Maze maze = room.RoomMaze;
-
-//            return maze;
-
             return room;
         }
 
