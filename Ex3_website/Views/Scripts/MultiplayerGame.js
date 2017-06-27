@@ -136,6 +136,8 @@
         function drawMaze(canvasId) {
             var myCanvas = document.getElementById(canvasId);
             context = myCanvas.getContext("2d");
+            context.clearRect(0, 0, $(canvasId).width(), $(canvasId).height());
+
             cellWidth = myCanvas.width / cols;
             cellHeight = myCanvas.height / rows;
 
@@ -143,7 +145,7 @@
                 for (var j = 0; j < cols; j++) {
 
                     // Color the wall.
-                    if (maze.charAt(i * rows + j) == 1) {
+                    if (maze.charAt(i * cols + j) == 1) {
                         context.fill = wallColor;
                         context.fillRect(cellWidth * j,
                             cellHeight * i,
@@ -215,6 +217,8 @@
 
                 commandsHub.server.startGame(gameName, rows, cols);
                 $("#loader").show();
+                $("#startButton").prop('disabled', true);
+                $("#joinButton").prop('disabled', true);
             }
         });
 
@@ -222,6 +226,8 @@
         $("#joinButton").click(function() {
 
             $("#multiError").hide();
+            $("#startButton").prop('disabled', true);
+            $("#joinButton").prop('disabled', true);
 
             //Validate option was selected.
             if ($("#gamesList").val() === null) {
@@ -250,11 +256,17 @@
                     switch (pressedKey) {
                     case right:
                         // If the right block is not a wall.
-                        if ((maze.charAt(parseInt(playerIPosition) * rows + parseInt(playerJPosition) + 1) != 1) &&
+                        if ((maze.charAt(parseInt(playerIPosition) * cols + parseInt(playerJPosition) + 1) != 1) &&
                             (parseInt(playerJPosition) + 1 < cols)) {
 
                             // Color the previous position cell.
-                            context.fillStyle = emptyColor;
+                            if (win) {
+                                context.fillStyle = "blue";
+                                win = false;
+                            }
+                            else {
+                                context.fillStyle = emptyColor;
+                            }
                             context.fillRect(cellWidth * playerJPosition,
                                 cellHeight * playerIPosition,
                                 cellWidth,
@@ -275,11 +287,17 @@
                     case left:
 
                         // If the left block is not a wall.
-                        if ((maze.charAt(parseInt(playerIPosition) * rows + parseInt(playerJPosition) - 1) != 1) &&
+                        if ((maze.charAt(parseInt(playerIPosition) * cols + parseInt(playerJPosition) - 1) != 1) &&
                             (parseInt(playerJPosition) - 1 >= 0)) {
 
                             // Color the previous position cell.
-                            context.fillStyle = emptyColor;
+                            if (win) {
+                                context.fillStyle = "blue";
+                                win = false;
+                            }
+                            else {
+                                context.fillStyle = emptyColor;
+                            }
                             context.fillRect(cellWidth * playerJPosition,
                                 cellHeight * playerIPosition,
                                 cellWidth,
@@ -300,11 +318,17 @@
                     case up:
 
                         // If the upper block is not a wall.
-                        if ((maze.charAt((parseInt(playerIPosition) - 1) * rows + parseInt(playerJPosition)) != 1) &&
+                        if ((maze.charAt((parseInt(playerIPosition) - 1) * cols + parseInt(playerJPosition)) != 1) &&
                             (parseInt(playerIPosition) - 1 >= 0)) {
 
                             // Color the previous position cell.
-                            context.fillStyle = emptyColor;
+                            if (win) {
+                                context.fillStyle = "blue";
+                                win = false;
+                            }
+                            else {
+                                context.fillStyle = emptyColor;
+                            }
                             context.fillRect(cellWidth * parseInt(playerJPosition),
                                 cellHeight * playerIPosition,
                                 cellWidth,
@@ -324,11 +348,18 @@
 
                     case down:
                         // If the downer block is not a wall.
-                        if ((maze.charAt((parseInt(playerIPosition) + 1) * rows + parseInt(playerJPosition)) != 1) &&
+                        if ((maze.charAt((parseInt(playerIPosition) + 1) * cols + parseInt(playerJPosition)) != 1) &&
                             (parseInt(playerIPosition) + 1 < rows)) {
 
                             // Color the previous position cell.
-                            context.fillStyle = emptyColor;
+                            if (win)
+                            {
+                                context.fillStyle = "blue";
+                                win = false;
+                            }
+                            else {
+                                context.fillStyle = emptyColor;
+                            }
                             context.fillRect(cellWidth * parseInt(playerJPosition),
                                 cellHeight * playerIPosition,
                                 cellWidth,
@@ -347,16 +378,16 @@
                         break;
                     }
 
+                    // Update opponent with position.
+                    commandsHub.server.sendCommand(mazeName,
+                        parseInt(playerIPosition) + "," + parseInt(playerJPosition));
+
                     // If player reached goal position.
                     if (parseInt(playerIPosition) == goalPosRow && parseInt(playerJPosition) == goalPosCol) {
                         alert("You won!");
                         win = true;
                         closeGame(mazeName);
                     }
-
-                    // Update opponent with position.
-                    commandsHub.server.sendCommand(mazeName,
-                        parseInt(playerIPosition) + "," + parseInt(playerJPosition));
                 }
             });
 
