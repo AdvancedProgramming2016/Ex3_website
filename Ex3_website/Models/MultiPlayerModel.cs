@@ -77,6 +77,14 @@ namespace Ex3_website.Models
             return GameRooms[mazeName].IsGameAvailable;
         }
 
+        /// <summary>
+        /// Start a new game.
+        /// </summary>
+        /// <param name="mazeName">Maze name.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="columns">Columns.</param>
+        /// <param name="connectionId"></param>
+        /// <returns>Maze.</returns>
         public Maze StartGame(string mazeName, int rows, int columns,
             string connectionId)
         {
@@ -96,15 +104,15 @@ namespace Ex3_website.Models
             room.AddPlayer(connectionId);
             GameRooms.Add(maze.Name, room);
 
-//            //Wait for second player to join the game.
-//            while (room.IsGameAvailable)
-//            {
-//                Thread.Sleep(250);
-//            }
-
             return maze;
         }
 
+        /// <summary>
+        /// Join an existing game.
+        /// </summary>
+        /// <param name="mazeName">Maze name.</param>
+        /// <param name="connectionId">Connection id.</param>
+        /// <returns>Game room.</returns>
         public GameRoom JoinGame(string mazeName, string connectionId)
         {
             //Add player to game room.
@@ -114,8 +122,13 @@ namespace Ex3_website.Models
             return room;
         }
 
+        /// <summary>
+        /// Close the game.
+        /// </summary>
+        /// <param name="mazeName">Maze name.</param>
         public void Close(string mazeName)
         {
+            //Check if game exists.
             if (this.StartedMazes.ContainsKey(mazeName))
             {
                 this.StartedMazes.Remove(mazeName);

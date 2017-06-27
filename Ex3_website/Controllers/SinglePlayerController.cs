@@ -10,7 +10,7 @@ using MazeLib;
 using Newtonsoft.Json.Linq;
 using SearchAlgorithmsLib;
 
-namespace Ex3_Web.Controllers
+namespace Ex3_Website.Controllers
 {
     public class SinglePlayerController : ApiController
     {

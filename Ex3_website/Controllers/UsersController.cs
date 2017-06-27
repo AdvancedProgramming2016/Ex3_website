@@ -16,17 +16,33 @@ using Ex3_website.Models.Entities;
 
 namespace Ex3_website.Controllers
 {
+    /// <summary>
+    /// Users controller.
+    /// </summary>
     public class UsersController : ApiController
     {
+        /// <summary>
+        /// Game context.
+        /// </summary>
         private GameContext db = new GameContext();
 
         // GET: api/Users
+        /// <summary>
+        /// Gets a collection of users.
+        /// </summary>
+        /// <returns>Collection.</returns>
         public IQueryable<User> GetUsers()
         {
             return db.Users.Any() ? db.Users : null;
         }
 
         // GET: api/Users/5
+        /// <summary>
+        /// Gets a user.
+        /// </summary>
+        /// <param name="username">Username.</param>
+        /// <param name="password">Password.</param>
+        /// <returns>User.</returns>
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetUser(string username,
             string password)
@@ -39,17 +55,25 @@ namespace Ex3_website.Controllers
                             u.Password == encryptedPassword)
                 .ToListAsync();
 
+            //Check if user is empty.
             if (users.Count == 0)
             {
                 return NotFound();
             }
 
+            //Get the user from the list.
             User user = users.First();
 
             return Ok();
         }
 
         // PUT: api/Users/5
+        /// <summary>
+        /// Updates the user.
+        /// </summary>
+        /// <param name="username">Username.</param>
+        /// <param name="isWon">Is the player won.</param>
+        /// <returns>Response.</returns>
         [ResponseType(typeof(void))]
         [HttpGet]
         public async Task<IHttpActionResult> UpdateUser(string username, bool isWon)
@@ -63,6 +87,7 @@ namespace Ex3_website.Controllers
             var users = await db.Users
                 .Where(u => u.Username == username) .ToListAsync();
 
+            //Check if list is empty.
             if (users.Count == 0)
             {
                 return NotFound();
@@ -102,6 +127,11 @@ namespace Ex3_website.Controllers
         }
 
         // POST: api/Users
+        /// <summary>
+        /// Add a new user.
+        /// </summary>
+        /// <param name="user">User.</param>
+        /// <returns>Response.</returns>
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> PostUser(User user)
         {
@@ -143,6 +173,11 @@ namespace Ex3_website.Controllers
         }
 
         // DELETE: api/Users/5
+        /// <summary>
+        /// Deletes the user.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>Response.</returns>
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> DeleteUser(int id)
         {
@@ -167,6 +202,11 @@ namespace Ex3_website.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Check is user exists.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>Bool.</returns>
         private bool UserExists(int id)
         {
             return db.Users.Count(e => e.Id == id) > 0;

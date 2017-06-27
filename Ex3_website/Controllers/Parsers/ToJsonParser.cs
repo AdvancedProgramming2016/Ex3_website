@@ -10,8 +10,16 @@ using SearchAlgorithmsLib;
 
 namespace Ex3_website.Controllers.Parsers
 {
+    /// <summary>
+    /// Parses objects to Json.
+    /// </summary>
     public static class ToJsonParser
     {
+        /// <summary>
+        /// Converts the maze into Json format.
+        /// </summary>
+        /// <param name="maze">Maze.</param>
+        /// <returns>Json.</returns>
         public static JObject ToJson(Maze maze)
         {
             JObject jsonMaze = new JObject();
@@ -42,7 +50,6 @@ namespace Ex3_website.Controllers.Parsers
         /// <returns>Json of the solution.</returns>
         public static JObject ToJson(Solution<Position> sol, string mazeName)
         {
-
             StringBuilder directionSb = new StringBuilder();
 
             foreach (State<Position> currPosition in sol.nodeList)
@@ -51,35 +58,40 @@ namespace Ex3_website.Controllers.Parsers
                 {
                     break;
                 }
-                else if (currPosition.cameFrom.state.Col == currPosition.state.Col + 1)
+                else if (currPosition.cameFrom.state.Col ==
+                         currPosition.state.Col + 1)
                 {
-                    directionSb.Append((int)Direction.Right);
+                    directionSb.Append((int) Direction.Right);
                 }
-                else if (currPosition.cameFrom.state.Col == currPosition.state.Col - 1)
+                else if (currPosition.cameFrom.state.Col ==
+                         currPosition.state.Col - 1)
                 {
-                    directionSb.Append((int)Direction.Left);
+                    directionSb.Append((int) Direction.Left);
                 }
-                else if (currPosition.cameFrom.state.Row == currPosition.state.Row + 1)
+                else if (currPosition.cameFrom.state.Row ==
+                         currPosition.state.Row + 1)
                 {
-                    directionSb.Append((int)Direction.Up);
+                    directionSb.Append((int) Direction.Up);
                 }
-                else if (currPosition.cameFrom.state.Row == currPosition.state.Row - 1)
+                else if (currPosition.cameFrom.state.Row ==
+                         currPosition.state.Row - 1)
                 {
-                    directionSb.Append((int)Direction.Down);
+                    directionSb.Append((int) Direction.Down);
                 }
             }
 
+            //Parse the solution to json format.
             SolutionJson sj = new SolutionJson(mazeName, directionSb.ToString(),
                 sol.numOfNodesEvaluated.ToString());
 
             JObject jObject = new JObject();
 
+            //Pass solution to Json object.
             jObject["Username"] = sj.name;
             jObject["Solution"] = sj.solution;
             jObject["EvalNodes"] = sj.evalNodes;
 
             return jObject;
-
         }
     }
 }

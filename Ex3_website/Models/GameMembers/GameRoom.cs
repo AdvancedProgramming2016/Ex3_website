@@ -2,8 +2,15 @@
 
 namespace Ex3_website.Models.GameMembers
 {
+    /// <summary>
+    /// Game room.
+    /// </summary>
     public class GameRoom
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="maze">Maze.</param>
         public GameRoom(Maze maze)
         {
             RoomMaze = maze;
@@ -12,19 +19,36 @@ namespace Ex3_website.Models.GameMembers
             PlayerTwo = null;
         }
 
+        /// <summary>
+        /// Maze property.
+        /// </summary>
         public Maze RoomMaze { get; set; }
 
+        /// <summary>
+        /// Is game available property.
+        /// </summary>
         public bool IsGameAvailable { get; set; }
 
+        /// <summary>
+        /// Player one property.
+        /// </summary>
         public Player PlayerOne { get; set; }
 
+        /// <summary>
+        /// Player two property.
+        /// </summary>
         public Player PlayerTwo { get; set; }
 
+        /// <summary>
+        /// Adds a player to the room.
+        /// </summary>
+        /// <param name="username">Username.</param>
         public void AddPlayer(string username)
         {
             Player player = new Player(username, RoomMaze.Name,
                 RoomMaze.InitialPos);
 
+            //Check if room already has a player.
             if (this.PlayerOne == null)
             {
                 PlayerOne = player;
@@ -36,6 +60,11 @@ namespace Ex3_website.Models.GameMembers
             }
         }
 
+        /// <summary>
+        /// Get player opponent.
+        /// </summary>
+        /// <param name="connectionId">Connection id.</param>
+        /// <returns>Opponent.</returns>
         public Player GetOpponent(string connectionId)
         {
 
