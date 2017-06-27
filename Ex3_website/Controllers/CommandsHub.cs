@@ -101,21 +101,14 @@ namespace Ex3_website.Controllers
             //Send command to opponent.
             Clients.Client(opponent.ConnectionId).gotCommand(command);
 
-//            CommunicationSet communicationSet = activeGames[gameName];
-//            string opponentId =
-//                communicationSet.GetOpponent(Context.ConnectionId);
-//
-//            //Check if opponent exists.
-//            if (opponentId == null)
-//            {
-//                return;
-//            }
-//
 //            //TODO Should I also add (gameName, command), meaning what happens if the opponent plays two games, which game will receive the command?
 //            Clients.Client(opponentId).gotCommand(command);
         }
 
-        //TODO find usage
+        /// <summary>
+        /// Closes the game.
+        /// </summary>
+        /// <param name="mazeName"></param>
         public void Close(string mazeName)
         {
             model.Close(mazeName);

@@ -32,8 +32,14 @@ namespace Ex3_website.Models
             this.AlgorithmFactory = new AlgorithmFactory<Position>();
         }
 
+        /// <summary>
+        /// Generated mazes property.
+        /// </summary>
         public Dictionary<string, Maze> GenerateMazes { get; }
 
+        /// <summary>
+        /// Solved mazes property.
+        /// </summary>
         public Dictionary<string, Solution<Position>> SolvedMazes { get; }
 
         /// <summary>
@@ -42,8 +48,16 @@ namespace Ex3_website.Models
         /// <value>AlgorithmFactory.</value>
         public AlgorithmFactory<Position> AlgorithmFactory { get; }
 
+        /// <summary>
+        /// Generate a maze.
+        /// </summary>
+        /// <param name="mazeName">Maze name.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="columns">Columns.</param>
+        /// <returns>Maze.</returns>
         public Maze GenerateMaze(string mazeName, int rows, int columns)
         {
+            //Check if maze already exists.
             if (GenerateMazes.ContainsKey(mazeName))
             {
                 return null;
@@ -59,6 +73,12 @@ namespace Ex3_website.Models
             return maze;
         }
 
+        /// <summary>
+        /// Solves a maze.
+        /// </summary>
+        /// <param name="mazeName">Maze name.</param>
+        /// <param name="algorithmType">Algorithm type.</param>
+        /// <returns>Solution.</returns>
         public Solution<Position> SolveMaze(string mazeName, int algorithmType)
         {
             //Check is solution already exists.
