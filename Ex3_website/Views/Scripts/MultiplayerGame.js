@@ -367,14 +367,14 @@
     });
 
 
-    function updateScore() {
+    function updateScore(isWon) {
 
         $.ajax({
             type: 'GET',
             url: '../../api/Users',
             data: {
                 username: $("username").val(),
-                isWon: win
+                isWon: isWon
             },
             dataType: 'json',
             success: function(response) {

@@ -4,7 +4,7 @@
 
     //Load navbar.
     $("#rankingsNav").load("Navbar.html",
-        function () {
+        function() {
 
             var username = sessionStorage.getItem("username");
 
@@ -18,7 +18,7 @@
                 $("#loginTab").hide();
                 $("#logoutTab").show();
                 $("#logout").on('click',
-                    function () {
+                    function() {
                         sessionStorage.removeItem("username");
                         window.location.replace("Homepage.html");
                     });
@@ -37,14 +37,26 @@
 
             if (response != null) {
 
-               var usersList = [];
+                var usersList = [];
                 for (var i = 0; i < response.length; i++) {
                     usersList.push(response[i]);
                 }
 
                 //Sort the users.
                 usersList.sort(function(a, b) {
-                    return a.GamesWon - b.GamesLost;
+
+                    var calcA = a.GamesWon - b.GamesLost;
+                    var calcB = b.GamesWon - b.GamesLost;
+
+                    if (calcA < calcB) {
+                        return 1;
+                    }
+
+                    if (calcA > calcB) {
+                        return -1;
+                    }
+
+                    return 0;
                 });
 
                 //Display the users.
