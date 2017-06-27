@@ -51,8 +51,9 @@
     var cellWidth = undefined;
     var cellHeight = undefined;
     var wallColor = "#000000";
-    var playerColor = "#FF0000";
+    var playerColor = document.getElementById("playerLogo");
     var emptyColor = "#FFFFFF";
+    var endPic = document.getElementById("endLogo");
     var context = undefined;
     var win = undefined;
 
@@ -93,8 +94,7 @@
             cellHeight);
 
         // Color new opponent position.
-        context.fillStyle = playerColor;
-        context.fillRect(cellWidth * opponentJPos,
+        context.drawImage(playerColor, cellWidth * opponentJPos,
             cellHeight * opponentIPos,
             cellWidth,
             cellHeight);
@@ -103,12 +103,12 @@
         opponentPlayerJPosition = opponentJPos;
 
         if (opponentIPos == goalPosRow && opponentJPos == goalPosCol) {
-            alert("Opponent won!");
+            $("#winOrLoseMsg").show().text("Opponent Won!");
             win = false;
             //commandsHub.server.close();
         }
     };
-
+    
     commandsHub.client.gotError = function(error) {
         
         //Maze name already exists.
@@ -156,20 +156,16 @@
                         playerJPosition = parseInt(j);
                         opponentPlayerIPosition = parseInt(i);
                         opponentPlayerJPosition = parseInt(j);
-                        context.fillStyle = playerColor;
-                        context.fillRect(cellWidth * j,
+                        context.drawImage(playerColor, cellWidth * j,
                             cellHeight * i,
                             cellWidth,
                             cellHeight);
-                        context.fillStyle = wallColor;
                     } else if (goalPosRow == i && goalPosCol == j) // Color the goal position.
                     {
-                        context.fillStyle = "blue";
-                        context.fillRect(cellWidth * j,
+                        context.drawImage(endPic, cellWidth * j,
                             cellHeight * i,
                             cellWidth,
                             cellHeight);
-                        context.fillStyle = wallColor;
                     }
                 }
             }
@@ -198,6 +194,7 @@
 
         $("#startButton").click(function() {
 
+            $("#startButton").prop('disabled', true);
             $("#multiError").hide();
 
             var gameName = $("#gameName").val();
@@ -261,23 +258,32 @@
 
                             // Color the previous position cell.
                             if (win) {
-                                context.fillStyle = "blue";
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+
+                                context.drawImage(endPic, cellWidth * playerJPosition,
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
                                 win = false;
                             }
                             else {
                                 context.fillStyle = emptyColor;
-                            }
-                            context.fillRect(cellWidth * playerJPosition,
+                                context.fillRect(cellWidth * playerJPosition,
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
+                            }
+                            
 
                             // Update player coordinate.
                             playerJPosition += 1;
 
                             // Color the new location of player.
-                            context.fillStyle = playerColor;
-                            context.fillRect(cellWidth * playerJPosition,
+                            context.drawImage(playerColor, cellWidth * playerJPosition,
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
@@ -292,23 +298,30 @@
 
                             // Color the previous position cell.
                             if (win) {
-                                context.fillStyle = "blue";
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                                context.drawImage(endPic, cellWidth * playerJPosition,
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
                                 win = false;
                             }
                             else {
                                 context.fillStyle = emptyColor;
-                            }
-                            context.fillRect(cellWidth * playerJPosition,
+                                context.fillRect(cellWidth * playerJPosition,
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerJPosition -= 1;
 
                             // Color the new location of player.
-                            context.fillStyle = playerColor;
-                            context.fillRect(cellWidth * playerJPosition,
+                            context.drawImage(playerColor, cellWidth * playerJPosition,
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
@@ -323,23 +336,31 @@
 
                             // Color the previous position cell.
                             if (win) {
-                                context.fillStyle = "blue";
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+
+                                context.drawImage(endPic, cellWidth * parseInt(playerJPosition),
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
                                 win = false;
                             }
                             else {
                                 context.fillStyle = emptyColor;
-                            }
-                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                                context.fillRect(cellWidth * parseInt(playerJPosition),
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerIPosition -= 1;
 
                             // Color the new location of player.
-                            context.fillStyle = playerColor;
-                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                            context.drawImage(playerColor, cellWidth * parseInt(playerJPosition),
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
@@ -354,23 +375,31 @@
                             // Color the previous position cell.
                             if (win)
                             {
-                                context.fillStyle = "blue";
+                                context.fillStyle = emptyColor;
+                                context.fillRect(cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+
+                                context.drawImage(endPic, cellWidth * parseInt(playerJPosition),
+                                cellHeight * playerIPosition,
+                                cellWidth,
+                                cellHeight);
                                 win = false;
                             }
                             else {
                                 context.fillStyle = emptyColor;
-                            }
-                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                                context.fillRect(cellWidth * parseInt(playerJPosition),
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
+                            }
 
                             // Update player coordinate.
                             playerIPosition += 1;
 
                             // Color the new location of player.
-                            context.fillStyle = playerColor;
-                            context.fillRect(cellWidth * parseInt(playerJPosition),
+                            context.drawImage(playerColor, cellWidth * parseInt(playerJPosition),
                                 cellHeight * playerIPosition,
                                 cellWidth,
                                 cellHeight);
@@ -383,10 +412,11 @@
                         parseInt(playerIPosition) + "," + parseInt(playerJPosition));
 
                     // If player reached goal position.
-                    if (parseInt(playerIPosition) == goalPosRow && parseInt(playerJPosition) == goalPosCol) {
-                        alert("You won!");
+                    if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
                         win = true;
                         closeGame(mazeName);
+                        $("#winOrLoseMsg").show().text("You won!");
+                        
                     }
                 }
             });
