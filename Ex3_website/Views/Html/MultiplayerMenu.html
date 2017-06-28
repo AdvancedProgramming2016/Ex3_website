@@ -47,16 +47,35 @@
             </div>
         </td>
         <td class="tableMazeColumn">
-            <canvas id="myCanvas" width="300" height="300" style="border: 2px black solid"></canvas>
+            <div>
+                <div class="alert alert-success" id="myWinMessage">
+                   </div>
+                <div class="alert alert-danger" id="myLoseMessage">
+                   
+                </div>
+                <label id="myLabel" style="color: darkgreen">My board</label>
+                <br/>
+                <canvas id="myCanvas" width="300" height="300" style="border: 2px black solid"></canvas>
+            </div>
+          
         </td>
         <td class="tableMazeColumn">
-            <canvas id="opponentCanvas" width="300" height="300" style="border: 2px black solid"></canvas>
+            <div>
+                <div class="alert alert-success" id="opponentWinMessage">
+                </div>
+                <div class="alert alert-danger" id="opponentLoseMessage">
+                   
+                </div>
+                <label id="opponentLabel" style="color: crimson">Opponent board</label>
+                <br/>
+                <canvas id="opponentCanvas" width="300" height="300" style="border: 2px black solid"></canvas>
+            </div>
+          
         </td>
     </tr>
 </table>
 
 <div class="spinner" id="loader"></div>
-<div class="alert alert-danger" id="winOrLoseMsg"></div>
 <img height="0" width="0" id="playerLogo" src="../Images/player.png" alt="playerLogo" />
 <img height="0" width="0" id="endLogo" src="../Images/exit.png" alt="endLogo" />
 </body>

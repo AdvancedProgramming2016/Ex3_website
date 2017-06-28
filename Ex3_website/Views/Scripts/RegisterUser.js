@@ -13,6 +13,7 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
+                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();
@@ -31,7 +32,7 @@
         function() {
 
             $("#registerError").hide();
-
+           
             //Validate input before submit.
             if ($("#username").val() == "") {
 
@@ -50,6 +51,10 @@
                 $("#registerError").show().text("Invalid email");
             } else {
 
+                $("#submitButton").prop('disabled', true);
+
+                var newUsername = $("#username").val();
+
                 $.ajax({
                     type: 'POST',
                     url: '../../api/Users',
@@ -62,11 +67,14 @@
                     },
                     success: function(response) {
 
-                        sessionStorage.setItem("username", username);
+                        sessionStorage.setItem("username", newUsername);
                         window.location.replace("Homepage.html");
                     },
 
-                    error: function(xhr, textStatus, errorThrown) {
+                    error: function (xhr, textStatus, errorThrown) {
+
+                        $("#submitButton").prop('disabled', false);
+
                         if (xhr.status == 400) {
 
                             $("#registerError").show().text("Username already exists");

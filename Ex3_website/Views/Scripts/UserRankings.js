@@ -14,6 +14,7 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
+                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();
@@ -85,6 +86,7 @@
         //In case of an error.
         error: function(xhr, textStatus, errorThrown) {
             alert("Error: connection lost");
+            window.location.replace("Homepage.html");
         }
     });
 });

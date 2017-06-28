@@ -31,7 +31,7 @@
         function() {
 
             $("#loginError").hide();
-
+           
             var username = $("#username").val();
             var password = $("#password").val();
 
@@ -43,6 +43,8 @@
 
                 $("#loginError").show().text("Password can't be empty");
             } else {
+
+                $("#loginButton").prop('disabled', true);
 
                 $.ajax({
                     type: 'GET',
@@ -60,6 +62,8 @@
                     },
 
                     error: function(xhr, textStatus, errorThrown) {
+
+                        $("#loginButton").prop('disabled', false);
 
                         if (xhr.status == 404) {
                             $("#loginError").show().text("Wrong username or password.");

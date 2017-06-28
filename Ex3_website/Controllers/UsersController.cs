@@ -67,7 +67,6 @@ namespace Ex3_website.Controllers
             return Ok();
         }
 
-        // PUT: api/Users/5
         /// <summary>
         /// Updates the user.
         /// </summary>
@@ -76,7 +75,8 @@ namespace Ex3_website.Controllers
         /// <returns>Response.</returns>
         [ResponseType(typeof(void))]
         [HttpGet]
-        public async Task<IHttpActionResult> UpdateUser(string username, bool isWon)
+        public async Task<IHttpActionResult> UpdateUser(string username,
+            bool isWon)
         {
             if (!ModelState.IsValid)
             {
@@ -85,7 +85,8 @@ namespace Ex3_website.Controllers
 
             //Get user by username.
             var users = await db.Users
-                .Where(u => u.Username == username) .ToListAsync();
+                .Where(u => u.Username == username)
+                .ToListAsync();
 
             //Check if list is empty.
             if (users.Count == 0)
@@ -104,7 +105,7 @@ namespace Ex3_website.Controllers
             {
                 user.GamesLost = user.GamesLost + 1;
             }
-              
+
             db.Entry(user).State = EntityState.Modified;
 
             try

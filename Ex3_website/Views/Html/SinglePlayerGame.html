@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="singleNav"></div>
-    
+
 <table>
     <tr>
         <td class="tableMazeColumn">
@@ -33,7 +33,7 @@
                     <br/>
                     <div class="alert alert-danger" id="singleError"></div>
                     <select name="algorithms" id="selectedAlgo">
-                        
+
                     </select>
                     <br/>
                     <button id="solveMaze" class="submitButton">Solve Maze</button>
@@ -43,12 +43,13 @@
         </td>
         <td class="tableMazeColumn">
             <!-- Second column -->
+            <div class="alert alert-success" id="winMessage"></div>
             <canvas id="mazeCanvas" width="400" height="400" style="border: 2px black solid" onkeypress="movePlayer(event)"></canvas>
         </td>
     </tr>
 </table>
-    
-   
+
+
 <!-- <h1>Single Game</h1>-->
 <!-- <table>-->
 <!-- <tr>-->
@@ -110,6 +111,6 @@
 <!-- </tr>-->
 <!-- </table>-->
 <img height="0" width="0" id="playerLogo" src="../Images/player.png" alt="playerLogo"/>
-<img height="0" width="0" id="endLogo" src="../Images/exit.png" alt="endLogo" />
+<img height="0" width="0" id="endLogo" src="../Images/exit.png" alt="endLogo"/>
 </body>
 </html>

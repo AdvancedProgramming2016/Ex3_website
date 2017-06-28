@@ -11,6 +11,7 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
+                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();
@@ -24,6 +25,7 @@
 
     $("#singleError").hide();
     $("#mazeCanvas").hide();
+    $("#winMessage").hide();
     $("#solveMaze").prop('disabled', true);
 
     $("#mazeRows").val(localStorage.getItem("defaultNumOfRows"));
@@ -107,7 +109,8 @@
 
                                 // If player reached goal position.
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    alert("You won!");
+                                    //alert("You won!");
+                                    $("#winMessage").show().text("You solved the maze");
                                 }
                                 break;
 
@@ -149,7 +152,8 @@
 
                                 // If player reached goal position.
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    alert("You won!");
+                                    //alert("You won!");
+                                    $("#winMessage").show().text("You solved the maze");
                                 }
                                 break;
 
@@ -191,7 +195,8 @@
 
                                 // If player reached goal position.
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    alert("You won!");
+                                    // alert("You won!");
+                                    $("#winMessage").show().text("You solved the maze");
                                 }
                                 break;
 
@@ -231,7 +236,8 @@
 
                                 // If player reached goal position.
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    alert("You won!");
+                                    //alert("You won!");
+                                    $("#winMessage").show().text("You solved the maze");
                                 }
                                 break;
                         }
@@ -244,6 +250,7 @@
         function() {
 
             $("#singleError").hide();
+            $("#winMessage").hide();
 
             if ($("#mazeName").val() == "") {
 
@@ -342,7 +349,10 @@
         });
 
     $("#solveMaze").on('click',
-        function() {
+        function () {
+
+            $("#winMessage").hide();
+
             $.ajax({
                 type: 'GET',
                 url: '../../api/SinglePlayer',
@@ -480,7 +490,8 @@
                                 disableKey(false);
                                 $("#solveMaze").prop('disabled', false);
                                 $("#btnStartNewGame").prop('disabled', false);
-                                alert("Congratulations!!!");
+                                // alert("Congratulations!!!");
+                                $("#winMessage").show().text("Maze solved");
                             } else {
                                 i++;
                             }
