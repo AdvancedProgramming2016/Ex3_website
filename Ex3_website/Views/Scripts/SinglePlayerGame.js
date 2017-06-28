@@ -479,6 +479,7 @@
                                 clearInterval(intervalId);
                                 disableKey(false);
                                 $("#solveMaze").prop('disabled', false);
+                                $("#btnStartNewGame").prop('disabled', false);
                                 alert("Congratulations!!!");
                             } else {
                                 i++;
