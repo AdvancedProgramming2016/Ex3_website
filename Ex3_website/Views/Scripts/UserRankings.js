@@ -45,7 +45,7 @@
                 //Sort the users.
                 usersList.sort(function(a, b) {
 
-                    return a.GamesWon < b.GamesLost ? 1 : -1;
+                    return (a.GamesWon - a.GamesLost) < (b.GamesWon - b.GamesLost) ? 1 : -1;
                 });
 
                 //Display the users.
