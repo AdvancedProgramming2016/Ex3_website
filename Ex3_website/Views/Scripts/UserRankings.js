@@ -1,15 +1,17 @@
 ﻿$(function() {
 
-    //TODO document all the js and html files.
-
-    //Load navbar.
+    /**
+     * Load the navbar.
+     */
     $("#rankingsNav").load("Navbar.html",
         function() {
 
             var username = sessionStorage.getItem("username");
 
+            //Hide element.
             $("#logoutTab").hide();
 
+            //Check if user is logged in.
             if (username != null) {
 
                 $("#register").text(username);
@@ -24,8 +26,6 @@
                     });
             }
         });
-
-    //TODO add spinner if needed
 
     //Requests the users list from the server.
     $.ajax({
@@ -45,18 +45,7 @@
                 //Sort the users.
                 usersList.sort(function(a, b) {
 
-                    var calcA = a.GamesWon - b.GamesLost;
-                    var calcB = b.GamesWon - b.GamesLost;
-
-                    if (calcA < calcB) {
-                        return 1;
-                    }
-
-                    if (calcA > calcB) {
-                        return -1;
-                    }
-
-                    return 0;
+                    return a.GamesWon < b.GamesLost ? 1 : -1;
                 });
 
                 //Display the users.

@@ -100,9 +100,6 @@ namespace Ex3_website.Controllers
 
             //Send command to opponent.
             Clients.Client(opponent.ConnectionId).gotCommand(command);
-
-//            //TODO Should I also add (gameName, command), meaning what happens if the opponent plays two games, which game will receive the command?
-//            Clients.Client(opponentId).gotCommand(command);
         }
 
         /// <summary>

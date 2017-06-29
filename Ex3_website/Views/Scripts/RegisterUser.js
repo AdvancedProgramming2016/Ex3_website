@@ -8,6 +8,7 @@
 
             var username = sessionStorage.getItem("username");
 
+            //Hide element.
             $("#logoutTab").hide();
 
             //Check if user is logged in.
@@ -28,7 +29,9 @@
 
     $("#registerError").hide();
 
-    //Submit function.
+    /**
+     * Submit button click.
+     */
     $("#submitButton").on('click',
         function() {
 
@@ -88,7 +91,11 @@
             }
         });
 
-    //Validates email.
+    /**
+     * Validates email format.
+     * @param {string} email 
+     * @returns {bool} is valid.
+     */
     function isEmail(email) {
 
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;

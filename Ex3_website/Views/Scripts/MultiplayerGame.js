@@ -9,6 +9,7 @@
 
             $("#logoutTab").hide();
 
+            //Check if user is logged in.
             if (username != null) {
 
                 $("#register").text(username);
@@ -24,6 +25,7 @@
             }
         });
 
+    //Hide elements.
     $("#multiError").hide();
 
     //Set default rows and columns.

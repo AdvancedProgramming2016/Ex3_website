@@ -1,13 +1,17 @@
 ﻿jQuery(function ($) {
 
-    //Load navbar.
+    /**
+     * Loads the navbar.
+     */
     $("#settingsNav").load("Navbar.html",
         function () {
 
             var username = sessionStorage.getItem("username");
 
+            //Hide element.
             $("#logoutTab").hide();
 
+            //Check if user is logged in.
             if (username != null) {
 
                 $("#register").text(username);
@@ -23,6 +27,7 @@
             }
         });
 
+    //Hide elements.
     $("#settingsError").hide();
     $("#settingsSuccess").hide();
 
@@ -31,12 +36,16 @@
     document.getElementById("defaultNumOfCols").value = localStorage.getItem("defaultNumOfCols");
     document.getElementById("defaultAlgo").value = localStorage.getItem("defaultAlgo");
 
-    // Set new default values.
+    /**
+     * Set new default values click.
+     */ 
     $("#updateSettingsButton").on('click', function () {
 
+        //Hide elements.
         $("#settingsError").hide();
         $("#settingsSuccess").hide();
 
+        //Check that values are not empty.
         if ($("#defaultNumOfRows").val() == "") {
 
             $("#settingsError").show().text("rows can't be empty");

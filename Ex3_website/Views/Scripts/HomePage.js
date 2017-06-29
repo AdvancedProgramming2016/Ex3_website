@@ -33,6 +33,7 @@
             }
         });
 
+    //Get default size from local storage.
     var defaultNumOfRows = localStorage.getItem("defaultNumOfRows");
 
     if (!defaultNumOfRows) {

@@ -45,6 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Academy.Collections, Version=2.1.0.45, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Academy.Collections.2.1.0.0\lib\net45\Academy.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Academy.Numerics, Version=2.0.550.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Academy.Numerics.2.0.550.0\lib\net45\Academy.Numerics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -178,10 +186,8 @@
     <Content Include="Scripts\jquery.signalR-2.2.2.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />
     <Content Include="Views\Css\Style.css" />
-    <Content Include="Views\Html\Demo.html" />
     <Content Include="Views\Html\HomePage.html" />
     <Content Include="Views\Html\Login.html" />
-    <Content Include="Views\Html\MultiplayerGame.html" />
     <Content Include="Views\Html\MultiplayerMenu.html" />
     <Content Include="Views\Html\Navbar.html" />
     <Content Include="Views\Html\RegisterPage.html" />

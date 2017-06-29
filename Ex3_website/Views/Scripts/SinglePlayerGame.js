@@ -1,6 +1,8 @@
 ﻿$(function() {
 
-    //Load navbar.
+    /**
+     * Loads the navbar.
+     */
     $("#singleNav").load("Navbar.html",
         function() {
             var username = sessionStorage.getItem("username");
@@ -22,19 +24,20 @@
             }
         });
 
+    //Hide elements.
+    $("#loader").hide();
     $("#singleError").hide();
     $("#mazeCanvas").hide();
     $("#winMessage").hide();
     $("#solveMaze").prop('disabled', true);
 
+    //Get sizes from local storage.
     $("#mazeRows").val(localStorage.getItem("defaultNumOfRows"));
     $("#mazeCols").val(localStorage.getItem("defaultNumOfCols"));
-    if (localStorage.getItem("defaultAlgo") == "Bfs")
-    {
+    if (localStorage.getItem("defaultAlgo") == "Bfs") {
         $("#selectedAlgo").append("<option " + "value = " + "2" + ">" + "Bfs" + "</option>");
         $("#selectedAlgo").append("<option " + "value = " + "1" + ">" + "Dfs" + "</option>");
-    }
-    else {
+    } else {
         $("#selectedAlgo").append("<option " + "value = " + "1" + ">" + "Dfs" + "</option>");
         $("#selectedAlgo").append("<option " + "value = " + "2" + ">" + "Bfs" + "</option>");
     }
@@ -62,189 +65,203 @@
     var context = undefined;
     var isKeyDisabled = false;
 
+    /**
+     * On key movement.
+     */
     $(function() {
         $("body").on('keydown',
-            function (e) {
+            function(e) {
                 if (!isKeyDisabled) {
                     if (maze) {
                         var pressedKey = e.which;
                         var myCanvas = document.getElementById("mazeCanvas");
                         context = mazeCanvas.getContext("2d");
                         switch (pressedKey) {
-                            case right:
-                                // If the right block is not a wall.
-                                if ((maze.charAt(playerIPosition * cols + playerJPosition + 1) != 1) &&
-                                    (playerJPosition + 1 < cols)) {
+                        case right:
+                            // If the right block is not a wall.
+                            if ((maze.charAt(playerIPosition * cols + playerJPosition + 1) != 1) &&
+                                (playerJPosition + 1 < cols)) {
 
-                                    if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
+                                if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
 
-                                        context.drawImage(endPic, cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    } else {
-                                        // Color the previous position cell.
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    }
-
-                                    // Update player coordinate.
-                                    playerJPosition += 1;
-
-                                    // Color the new location of player.
-                                    context.drawImage(playerColor, cellWidth * playerJPosition,
+                                    context.drawImage(endPic,
+                                        cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
+                                } else {
+                                    // Color the previous position cell.
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
                                         cellHeight * playerIPosition,
                                         cellWidth,
                                         cellHeight);
                                 }
 
-                                // If player reached goal position.
+                                // Update player coordinate.
+                                playerJPosition += 1;
+
+                                // Color the new location of player.
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
+
+                            // If player reached goal position.
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                //alert("You won!");
+                                $("#winMessage").show().text("You solved the maze");
+                            }
+                            break;
+
+                        case left:
+
+                            // If the left block is not a wall.
+                            if ((maze.charAt(playerIPosition * cols + playerJPosition - 1) != 1) &&
+                                (playerJPosition - 1 >= 0)) {
+
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    //alert("You won!");
-                                    $("#winMessage").show().text("You solved the maze");
-                                }
-                                break;
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
 
-                            case left:
-
-                                // If the left block is not a wall.
-                                if ((maze.charAt(playerIPosition * cols + playerJPosition - 1) != 1) &&
-                                    (playerJPosition - 1 >= 0)) {
-
-                                    if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-
-                                        context.drawImage(endPic, cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    } else {
-                                        // Color the previous position cell.
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    }
-
-                                    // Update player coordinate.
-                                    playerJPosition -= 1;
-
-                                    // Color the new location of player.
-                                    context.drawImage(playerColor, cellWidth * playerJPosition,
+                                    context.drawImage(endPic,
+                                        cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
+                                } else {
+                                    // Color the previous position cell.
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
                                         cellHeight * playerIPosition,
                                         cellWidth,
                                         cellHeight);
                                 }
 
-                                // If player reached goal position.
+                                // Update player coordinate.
+                                playerJPosition -= 1;
+
+                                // Color the new location of player.
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
+
+                            // If player reached goal position.
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                //alert("You won!");
+                                $("#winMessage").show().text("You solved the maze");
+                            }
+                            break;
+
+                        case up:
+
+                            // If the upper block is not a wall.
+                            if ((maze.charAt((playerIPosition - 1) * cols + playerJPosition) != 1) &&
+                                (playerIPosition - 1 >= 0)) {
+
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    //alert("You won!");
-                                    $("#winMessage").show().text("You solved the maze");
-                                }
-                                break;
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
 
-                            case up:
-
-                                // If the upper block is not a wall.
-                                if ((maze.charAt((playerIPosition - 1) * cols + playerJPosition) != 1) &&
-                                    (playerIPosition - 1 >= 0)) {
-
-                                    if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-
-                                        context.drawImage(endPic, cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    } else {
-                                        // Color the previous position cell.
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    }
-
-                                    // Update player coordinate.
-                                    playerIPosition -= 1;
-
-                                    // Color the new location of player.
-                                    context.drawImage(playerColor, cellWidth * playerJPosition,
+                                    context.drawImage(endPic,
+                                        cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
+                                } else {
+                                    // Color the previous position cell.
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
                                         cellHeight * playerIPosition,
                                         cellWidth,
                                         cellHeight);
                                 }
 
-                                // If player reached goal position.
+                                // Update player coordinate.
+                                playerIPosition -= 1;
+
+                                // Color the new location of player.
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
+
+                            // If player reached goal position.
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                // alert("You won!");
+                                $("#winMessage").show().text("You solved the maze");
+                            }
+                            break;
+
+                        case down:
+                            // If the downer block is not a wall.
+                            if ((maze.charAt((playerIPosition + 1) * cols + playerJPosition) != 1) &&
+                                (playerIPosition + 1 < rows)) {
+
                                 if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    // alert("You won!");
-                                    $("#winMessage").show().text("You solved the maze");
-                                }
-                                break;
-
-                            case down:
-                                // If the downer block is not a wall.
-                                if ((maze.charAt((playerIPosition + 1) * cols + playerJPosition) != 1) &&
-                                    (playerIPosition + 1 < rows)) {
-
-                                    if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                        context.drawImage(endPic, cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    } else {
-                                        // Color the previous position cell.
-                                        context.fillStyle = emptyColor;
-                                        context.fillRect(cellWidth * playerJPosition,
-                                            cellHeight * playerIPosition,
-                                            cellWidth,
-                                            cellHeight);
-                                    }
-
-                                    // Update player coordinate.
-                                    playerIPosition += 1;
-
-                                    // Color the new location of player.
-                                    context.drawImage(playerColor, cellWidth * playerJPosition,
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
+                                    context.drawImage(endPic,
+                                        cellWidth * playerJPosition,
+                                        cellHeight * playerIPosition,
+                                        cellWidth,
+                                        cellHeight);
+                                } else {
+                                    // Color the previous position cell.
+                                    context.fillStyle = emptyColor;
+                                    context.fillRect(cellWidth * playerJPosition,
                                         cellHeight * playerIPosition,
                                         cellWidth,
                                         cellHeight);
                                 }
 
-                                // If player reached goal position.
-                                if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
-                                    //alert("You won!");
-                                    $("#winMessage").show().text("You solved the maze");
-                                }
-                                break;
+                                // Update player coordinate.
+                                playerIPosition += 1;
+
+                                // Color the new location of player.
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
+                                    cellHeight * playerIPosition,
+                                    cellWidth,
+                                    cellHeight);
+                            }
+
+                            // If player reached goal position.
+                            if (playerIPosition == goalPosRow && playerJPosition == goalPosCol) {
+                                //alert("You won!");
+                                $("#winMessage").show().text("You solved the maze");
+                            }
+                            break;
                         }
                     }
-                } 
-            })
+                }
+            });
     });
 
+    /**
+     * Start game click.
+     */
     $("#btnStartNewGame").on('click',
         function() {
 
@@ -261,11 +278,16 @@
 
             } else if ($("#mazeCols").val() == "") {
 
-                //TODO check if this check is necessary
                 $("#singleError").show().text("Columns can't be empty");
 
             } else {
+                
+                //Show loader.
+                $("#loader").show();
+
+                //Disable button.
                 $("#btnStartNewGame").prop('disabled', true);
+
                 $.ajax({
                     type: 'GET',
                     url: '../../api/SinglePlayer',
@@ -275,8 +297,11 @@
                         columns: $("#mazeCols").val()
                     },
                     dataType: 'json',
-                    success: function (response) {
-                        
+
+                    //In case of success.
+                    success: function(response) {
+
+                        $("#loader").hide();
                         var myCanvas = document.getElementById("mazeCanvas");
                         var contexts = mazeCanvas.getContext("2d");
                         contexts.clearRect(0, 0, $("#mazeCanvas").width(), $("#mazeCanvas").height());
@@ -285,7 +310,7 @@
 
                             $("#singleError").show().text("Maze already exists");
                         } else {
-                            
+
                             $("#mazeCanvas").show();
 
                             name = response.Username;
@@ -319,36 +344,43 @@
                                         playerIPosition = i;
                                         playerJPosition = j;
 
-                                        context.drawImage(playerColor, cellWidth * playerJPosition,
-                                        cellHeight * playerIPosition,
-                                        cellWidth,
-                                        cellHeight);
+                                        context.drawImage(playerColor,
+                                            cellWidth * playerJPosition,
+                                            cellHeight * playerIPosition,
+                                            cellWidth,
+                                            cellHeight);
                                     } else if (response.GoalPos.Row == i &&
                                         response.GoalPos.Col == j) // Color the goal position.
                                     {
-                                        context.drawImage(endPic, cellWidth * j,
-                                        cellHeight * i,
-                                        cellWidth,
-                                        cellHeight);
+                                        context.drawImage(endPic,
+                                            cellWidth * j,
+                                            cellHeight * i,
+                                            cellWidth,
+                                            cellHeight);
                                     }
                                 }
                             }
                         }
-                        
+
                         $("#solveMaze").prop('disabled', false);
                         $("#btnStartNewGame").prop('disabled', false);
 
                     },
 
+                    //In case of an error.
                     error: function(xhr, textStatus, errorThrown) {
+                        $("#loader").hide();
                         alert("Error: connection lost");
                     }
                 });
             }
         });
 
+    /**
+     * Solve button click.
+     */
     $("#solveMaze").on('click',
-        function () {
+        function() {
 
             $("#winMessage").hide();
 
@@ -362,15 +394,18 @@
                     algorithmType: algorithmType
                 },
                 dataType: 'json',
+
+                //In case of success.
                 success: function(response) {
-                    
+
                     disableKey(true);
                     context.fillStyle = emptyColor;
                     context.fillRect(cellWidth * goalPosCol,
                         cellHeight * goalPosRow,
                         cellWidth,
                         cellHeight);
-                    context.drawImage(endPic, cellWidth * goalPosCol,
+                    context.drawImage(endPic,
+                        cellWidth * goalPosCol,
                         cellHeight * goalPosRow,
                         cellWidth,
                         cellHeight);
@@ -380,14 +415,13 @@
                     var i = 0;
                     var reverseSolution = reverseString(response.Solution);
 
-                    if (playerJPosition == goalPosCol && playerIPosition == goalPosRow)
-                    {
-                        context.drawImage(endPic, cellWidth * playerJPosition,
+                    if (playerJPosition == goalPosCol && playerIPosition == goalPosRow) {
+                        context.drawImage(endPic,
+                            cellWidth * playerJPosition,
                             cellHeight * playerIPosition,
                             cellWidth,
                             cellHeight);
-                    }
-                    else {
+                    } else {
                         // Remove player current rectangle.
                         context.fillStyle = emptyColor;
                         context.fillRect(cellWidth * playerJPosition,
@@ -395,12 +429,13 @@
                             cellWidth,
                             cellHeight);
                     }
-                    
+
                     // Place player in initial rectangle.
                     playerJPosition = initPosCol;
                     playerIPosition = initPosRow;
 
-                    context.drawImage(playerColor, cellWidth * playerJPosition,
+                    context.drawImage(playerColor,
+                        cellWidth * playerJPosition,
                         cellHeight * playerIPosition,
                         cellWidth,
                         cellHeight);
@@ -420,7 +455,8 @@
                                 playerJPosition -= 1;
 
                                 // Color the new location of player.
-                                context.drawImage(playerColor, cellWidth * playerJPosition,
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
                                     cellHeight * playerIPosition,
                                     cellWidth,
                                     cellHeight);
@@ -439,7 +475,8 @@
                                 playerJPosition += 1;
 
                                 // Color the new location of player.
-                                context.drawImage(playerColor, cellWidth * playerJPosition,
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
                                     cellHeight * playerIPosition,
                                     cellWidth,
                                     cellHeight);
@@ -458,7 +495,8 @@
                                 playerIPosition -= 1;
 
                                 // Color the new location of player.
-                                context.drawImage(playerColor, cellWidth * playerJPosition,
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
                                     cellHeight * playerIPosition,
                                     cellWidth,
                                     cellHeight);
@@ -477,7 +515,8 @@
                                 playerIPosition += 1;
 
                                 // Color the new location of player.
-                                context.drawImage(playerColor, cellWidth * playerJPosition,
+                                context.drawImage(playerColor,
+                                    cellWidth * playerJPosition,
                                     cellHeight * playerIPosition,
                                     cellWidth,
                                     cellHeight);
@@ -499,17 +538,24 @@
                         },
                         250);
 
+                    /**
+                     * Reverses a string.
+                     * @param {string} str .
+                     * @returns {string} reversed str. 
+                     */
                     function reverseString(str) {
                         var splitString = str.split("");
                         var reverseArray = splitString.reverse();
                         var joinArray = reverseArray.join("");
                         return joinArray;
                     }
-                    function disableKey(isDisable)
-                    {
+
+                    function disableKey(isDisable) {
                         isKeyDisabled = isDisable;
                     }
                 },
+
+                //In case of an error.
                 error: function(xhr, textStatus, errorThrown) {
                     alert("Error: connection lost");
                 }
