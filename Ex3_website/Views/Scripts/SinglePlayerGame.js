@@ -11,7 +11,6 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
-                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();
@@ -353,12 +352,14 @@
 
             $("#winMessage").hide();
 
+            var algorithmType = $("#selectedAlgo").val() - 1;
+
             $.ajax({
                 type: 'GET',
                 url: '../../api/SinglePlayer',
                 data: {
                     mazeName: $("#mazeName").val(),
-                    algorithmType: $("#selectedAlgo").val(),
+                    algorithmType: algorithmType
                 },
                 dataType: 'json',
                 success: function(response) {

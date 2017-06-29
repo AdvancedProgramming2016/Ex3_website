@@ -12,7 +12,9 @@
         $("#login").attr("href", "HomePage.html");
     }
 
-
+    /**
+     * Login button click.
+     */
     $("#login").click(function() {
 
         // The user is logged in and wants to log off.

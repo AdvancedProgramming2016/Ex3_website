@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="../../Bootstrap/Content/bootstrap.min.css"/>
     <script src="../../Bootstrap/Scripts/jquery-1.9.1.js"></script>
     <script src="../../Bootstrap/Scripts/bootstrap.min.js"></script>
+    <script>
+        // If the user isn't logged in just redirect him to the login page.
+        if (sessionStorage.getItem("username") == null) {
+            window.location.replace("Login.html");
+        }
+    </script>
     <link rel="stylesheet" href="../../Bootstrap/Content/bootstrap-theme.min.css"/>
     <link href="../Css/Style.css" rel="stylesheet"/>
     <script src="../Scripts/MultiplayerGame.js"></script>

@@ -1,6 +1,8 @@
 ﻿jQuery(function($) {
 
-    //Load navbar.
+    /**
+     * Load the navbar.
+     */
     $("#multiNav").load("Navbar.html",
         function() {
             var username = sessionStorage.getItem("username");
@@ -11,7 +13,6 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
-                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();
@@ -29,6 +30,7 @@
     $("#rows").val(localStorage.getItem("defaultNumOfRows"));
     $("#columns").val(localStorage.getItem("defaultNumOfCols"));
 
+    //Hide elements.
     $("#loader").hide();
     $("#myWinMessage").hide();
     $("#myLoseMessage").hide();
@@ -67,22 +69,35 @@
 
     var commandsHub = $.connection.commandsHub;
 
+    /**
+     * Handles slow connection.
+     */
     $.connection.hub.connectionSlow(function() {
         alert("Error: connection failed.");
         window.location.replace("Homepage.html");
     });
 
+    /**
+     * Handles disconnection.
+     */
     $.connection.hub.disconnected(function() {
         alert("Error: connection failed.");
         window.location.replace("Homepage.html");
     });
 
+    /**
+     * Handles connection error.
+     */
     $.connection.hub.error(function(error) {
         alert("Error: connection failed.");
         window.location.replace("Homepage.html");
     });
 
-    //Handle received command from hub.
+    /**
+     * Handle received command from hub.
+     * @param {string} command 
+     * @returns {void} 
+     */
     commandsHub.client.gotCommand = function(command) {
 
         var opponentIPos;
@@ -122,6 +137,11 @@
         }
     };
 
+    /**
+     * Receives error message from server.
+     * @param {string} error 
+     * @returns {void} 
+     */
     commandsHub.client.gotError = function(error) {
 
         //Maze name already exists.
@@ -147,7 +167,11 @@
         goalPosCol = parseInt(jsonMaze.GoalPos.Col);
         mazeName = jsonMaze.Username;
 
-        // Function draws maze on canvas.
+        /**
+         * Draws the maze.
+         * @param {int} canvasId 
+         * @returns {void} 
+         */
         function drawMaze(canvasId) {
             var myCanvas = document.getElementById(canvasId);
             context = myCanvas.getContext("2d");
@@ -198,6 +222,11 @@
         document.title = jsonMaze.Username;
     }
 
+    /**
+     * Receives list of games from server.
+     * @param {list} gamesListInJsonFormat 
+     * @returns {void} 
+     */
     commandsHub.client.gotListOfGames = function(gamesListInJsonFormat) {
         var list = JSON.parse(gamesListInJsonFormat);
 
@@ -239,7 +268,9 @@
             }
         });
 
-        //Join button click.
+        /**
+         * Handle received command from hub.
+         */
         $("#joinButton").click(function() {
 
             $("#multiError").hide();
@@ -259,12 +290,19 @@
 
         });
 
+        /**
+         * Closes the game.
+         * @param {string} mazeName 
+         * @returns {void} 
+         */
         function closeGame(mazeName) {
 
             commandsHub.server.close(mazeName);
         }
 
-        //Send command to opponent.
+        /**
+         * Handle received command from hub.
+         */
         $("body").on("keydown",
             function(e) {
                 if (canMove) {
@@ -457,13 +495,20 @@
 
             });
 
+        /**
+         * Sends games list request to server.
+         */
         $("#gamesList").click(function() {
             commandsHub.server.getListOfGames();
         });
 
     });
 
-
+    /**
+     * Updates users game score.
+     * @param {bool} isWon 
+     * @returns {void} 
+     */
     function updateScore(isWon) {
 
         var user = sessionStorage.getItem("username");
@@ -477,7 +522,7 @@
             },
 
             success: function(response) {
-               
+
             },
 
             error: function(xhr, textStatus, errorThrown) {

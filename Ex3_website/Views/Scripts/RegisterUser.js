@@ -1,6 +1,8 @@
 ﻿jQuery(function($) {
 
-    //Load navbar.
+    /**
+     * Loads the navbar.
+     */
     $("#registerNav").load("Navbar.html",
         function() {
 
@@ -13,7 +15,6 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
-                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();

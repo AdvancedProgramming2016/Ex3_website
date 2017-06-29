@@ -12,7 +12,6 @@
 
                 $("#register").text(username);
                 $("#register").attr("href", "#");
-                $("#multiLink").attr("href", "MultiplayerMenu.html");
                 $("#login").text("Log out");
                 $("#loginTab").hide();
                 $("#logoutTab").show();

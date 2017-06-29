@@ -1,6 +1,8 @@
 ﻿$(function() {
 
-    //Load navbar.
+    /**
+     * Loads the navabar.
+     */
     $("#loginNav").load("Navbar.html",
         function() {
 
@@ -26,7 +28,9 @@
 
     $("#loginError").hide();
 
-    //Login button click.
+    /**
+     * Login button click.
+     */
     $("#loginButton").on('click',
         function() {
 
@@ -54,6 +58,7 @@
                         Password: password
                     },
 
+                    //In case of success.
                     success: function(response) {
 
                         sessionStorage.setItem("username", username);
@@ -61,6 +66,7 @@
                         window.location.replace("Homepage.html");
                     },
 
+                    //In case of an error.
                     error: function(xhr, textStatus, errorThrown) {
 
                         $("#loginButton").prop('disabled', false);

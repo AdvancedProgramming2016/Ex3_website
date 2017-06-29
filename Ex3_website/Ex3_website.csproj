@@ -128,7 +128,7 @@
     </Reference>
     <Reference Include="SearchAlgorithmsLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Ex2_2017-copy\GameClient\bin\Debug\SearchAlgorithmsLib.dll</HintPath>
+      <HintPath>bin\SearchAlgorithmsLib.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
